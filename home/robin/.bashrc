@@ -53,7 +53,7 @@ if [ -n "$force_color_prompt" ]; then
     fi
 fi
 
-PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\[\033[01;34m\]\w\[\033[00m\] Φ '
+PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\[\033[01;34m\]\w\[\033[00m\] \[\033[01;32m\]Φ\[\033[00m\] '
 unset color_prompt force_color_prompt
 
 # colored GCC warnings and errors
@@ -76,4 +76,6 @@ fi
 
 # Add personal libraries to python
 export PYTHONPATH="/home/robin/py"
+LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/usr/local/cuda/extras/CUPTI/lib64"
 
+export PATH="$PATH:~/bin"
