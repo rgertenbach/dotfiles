@@ -65,7 +65,7 @@ export PYTHONPATH="/home/robin/py"
 LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/usr/local/cuda/extras/CUPTI/lib64"
 
 # Use nvim or vim depending on what's available
-if ! command -v nvim &> /dev/null; then
+if command -v nvim &> /dev/null; then
   export EDITOR='nvim'
   export VISUAL='nvim'
 else
