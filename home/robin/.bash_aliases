@@ -14,6 +14,6 @@ alias l='ls -CF'
 
 
 # Alias nvim to vim if it is installed
-if ! command -v nvim &> /dev/null; then
+if command -v nvim &> /dev/null; then
   alias vim="nvim"
 fi
