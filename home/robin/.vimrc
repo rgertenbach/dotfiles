@@ -30,3 +30,9 @@ call matchadd('ColorColumn', '\%81v', -1)
 set clipboard=unnamedplus
 
 set pastetoggle=<F2> " Allow pasting multiple line without auto-indent
+
+" C-file autocmds
+augroup vimrc_c
+  autocmd!
+  autocmd BufNewFIle *.c,*.h set cindent
+augroup end
