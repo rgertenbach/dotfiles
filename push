@@ -1,0 +1,68 @@
+#!/usr/bin/env python3
+
+import argparse
+import os
+import shutil
+
+from typing import Generator
+
+
+parser = argparse.ArgumentParser(description='Push dotfiles into git branch.')
+parser.add_argument(
+  '--dry-run', type=bool, default=True, action=argparse.BooleanOptionalAction,
+  help='Whether to provide information what will be pushed or do it.')
+parser.add_argument(
+  '--input', '-i', type=str, default='allowlist.txt',
+  help='The filename of the allowlist of files to be pushed.')
+
+
+def files_to_sync(allowlist_filepath: str) -> Generator[str, None, None]:
+  """Gets the files to sync from the file that contains the allowlist.
+
+  Args:
+    allowlist_filepath: A filepath to the allowlist containing files to copy
+
+  Yields:
+    string filepaths of the files to copy.
+  """
+  with open(allowlist_filepath) as f:
+    yield from (filepath.strip() for filepath in f.readlines())
+
+
+def remove_leading_slash(filepath: str) -> str:
+  """Removes leading slashes to make directories relative to Root.
+
+  The source directory of the repo is assumed to be the PWD and simulates
+  ROOT.
+
+  Args:
+    filepath: The Absolute filepath of the file to copy.
+  """
+  return filepath.lstrip('/')
+
+
+def push_files(srcs, is_dry_run) -> None:
+  if is_dry_run:
+    print("DRY RUN, to actually copy files run with --no-dry-run")
+  for src in srcs:
+    push_file(src, is_dry_run)
+
+
+def push_file(src: str, is_dry_run) -> None:
+  "Copies a file from the distro to the corresponding directory."
+  dest = remove_leading_slash(src)
+  if is_dry_run:
+    print(f'Moving "{src}" to "{dest}"')
+  else:
+    os.makedirs(os.path.dirname(dest), exist_ok=True)
+    shutil.copyfile(dest, src)
+
+
+def main() -> None:
+  filepaths = files_to_sync(args.input)
+  push_files(filepaths, args.dry_run)
+
+
+if __name__ == '__main__':
+  args = parser.parse_args()
+  main()

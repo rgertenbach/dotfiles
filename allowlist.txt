@@ -5,4 +5,3 @@
 /home/robin/.vimrc
 /home/robin/.config/nvim/init.vim
 /home/robin/.config/nvim/plugins.lua
-
