@@ -31,8 +31,20 @@ set clipboard=unnamedplus
 
 set pastetoggle=<F2> " Allow pasting multiple line without auto-indent
 
+" autoclose brackets
+" TODO: Don't write an extra closing thing when on the closing thing.
+inoremap ( ()<left>
+inoremap [ []<left>
+inoremap { {}<left>
+inoremap < <><left>
+inoremap " ""<left>
+inoremap ' ''<left>
+
 " C-file autocmds
+" TODO: Make this apply ONLY to the c files, not non-c files.
 augroup vimrc_c
   autocmd!
-  autocmd BufNewFIle *.c,*.h set cindent
+  autocmd BufNewFile *.c,*.h set cindent
+  autocmd BufNewFile,BufRead *.c,*.h inoremap { {<CR><CR>}<UP><tab>
 augroup end
+
