@@ -1,7 +1,7 @@
-/home/robin/.bash_aliases
-/home/robin/.bash_prompt
-/home/robin/.bashrc
-/home/robin/.tmux.conf
-/home/robin/.vimrc
-/home/robin/.config/nvim/init.vim
-/home/robin/.config/nvim/plugins.lua
+~/.bash_aliases
+~/.bash_prompt
+~/.bashrc
+~/.tmux.conf
+~/.vimrc
+~/.config/nvim/init.vim
+~/.config/nvim/plugins.lua
