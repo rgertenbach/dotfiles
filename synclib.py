@@ -45,7 +45,7 @@ def convert_to_repo_path(filepath: str, homedir: str) -> str:
 def copy_file(dest: str, 
               source: str, 
               overwrite_newer: bool = False, 
-              handler: Handler = None) -> None:
+              handler: Handler | None = None) -> None:
   """Moves a file from the source to the destination.
 
   Args:
@@ -96,7 +96,7 @@ class Syncer:
   local_homedir: str
   repo_homedir: str
   overwrite_newer: bool = False
-  handler: Handler = None
+  handler: Handler | None = None
   verbose: bool = False
   dry_run: bool = True
 
