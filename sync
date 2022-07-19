@@ -6,56 +6,74 @@ import shutil
 
 import synclib
 
+from typing import Iterable
+
 
 DEFAULT_ALLOWLIST_FILEPATH = 'allowlist.txt'
-HOMEDIR_REPR = '~'
 DEFAULT_HOMEDIR = '/home/robin'
 
 parser = argparse.ArgumentParser(description='Push dotfiles into git branch.')
 
-parser.add_argument(
-  '--dry-run', type=bool, default=True, action=argparse.BooleanOptionalAction,
-  help='Whether to provide information what will be pushed or do it.')
 
 parser.add_argument(
   '--input', '-i', type=str, default=DEFAULT_ALLOWLIST_FILEPATH,
   help='The filename of the allowlist of files to be pushed.')
 
-parser.add_argument('--tilde', type=str, default=DEFAULT_HOMEDIR,
-                    help=f'User Homedirectory, defaults to {DEFAULT_HOMEDIR}')
 
-subparsers = subparsers = parser.add_subparsers(
+parser.add_argument(
+  '--tilde', type=str, default=DEFAULT_HOMEDIR,
+  help=f'User Homedirectory, defaults to {DEFAULT_HOMEDIR}.')
+
+
+parser.add_argument(
+  '--dry-run', type=bool, default=True, action=argparse.BooleanOptionalAction,
+  help='Whether to provide information what will be pushed or do it.')
+
+
+parser.add_argument(
+  '--overwrite-newer', type=bool, default=False, 
+  action=argparse.BooleanOptionalAction,
+  help='Whether to overwrite newer files or ask first')
+
+
+parser.add_argument(
+  '--verbose', '-v', type=bool, default=False, 
+  action=argparse.BooleanOptionalAction,
+  help='Whether to provide detailed output or not.')
+
+
+subparsers = parser.add_subparsers(
         help='We can either pull from git or push to git.')
 
-# parser_pull = subparsers.add_parser(
-#         'pull', help='Pull files from git into local machine.')
+
+def pull(syncer: synclib.Syncer, filepaths: Iterable[str]) -> None:
+  syncer.pull_files(filepaths)
+
+
+def push(syncer: synclib.Syncer, filepaths: Iterable[str]) -> None:
+  syncer.push_files(filepaths)
+
+
+parser_pull = subparsers.add_parser(
+        'pull', help='Pull files from git into local machine.')
+parser_pull.set_defaults(func=pull)
+
 
 parser_push = subparsers.add_parser(
         'push', help='Push files from local machine into git.')
+parser_push.set_defaults(func=push)
 
-
-def push(args: argparse.Namespace) -> None:
-  srcs = synclib.load_files_to_sync(args.input)
-  if args.is_dry_run:
-    print("DRY RUN, to actually copy files run with --no-dry-run.")
-  for src in srcs:
-    push_file(src, args.is_dry_run)
-
-
-def push_file(src: str, is_dry_run: bool) -> None:
-  "Copies a file from the distro to the corresponding directory."
-
-  dest = synclib.remove_leading_slash(src)
-  if is_dry_run:
-    print(f'Moving "{src}" to "{dest}"')
-  else:
-    os.makedirs(os.path.dirname(dest), exist_ok=True)
-    shutil.copyfile(dest, src)
 
 
 def main() -> None:
   args = parser.parse_args()
-  args.func(args)
+  syncer = synclib.Syncer(args.tilde, DEFAULT_HOMEDIR, 
+                          overwrite_newer=args.overwrite_newer,
+                          handler=synclib.ask_handler,
+                          verbose=args.verbose,
+                          dry_run=args.dry_run)
+  filepaths = synclib.load_files_to_sync(args.input)
+  args.func(syncer, filepaths)
 
 
 if __name__ == '__main__':

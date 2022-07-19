@@ -41,15 +41,14 @@ fi
 # colored GCC warnings and errors
 export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
 
-if [ -f ~/.bash_aliases ]; then
-    . ~/.bash_aliases
-fi
+# Add personal files and directories if they exist.
+[[ -f ~/.bash_aliases ]] && . ~/.bash_aliases
+[[ -f ~/.bash_prompt ]] && . ~/.bash_prompt
+[[ -d $HOME/bin ]] && export PATH="${PATH}:${HOME}/bin"
 
-if [ -f ~/.bash_prompt ]; then
-    . ~/.bash_prompt
-fi
-
-# enable programmable completion features 
+# enable programmable completion features (you don't need to enable
+# this, if it's already enabled in /etc/bash.bashrc and /etc/profile
+# sources /etc/bash.bashrc).
 if ! shopt -oq posix; then
   if [ -f /usr/share/bash-completion/bash_completion ]; then
     . /usr/share/bash-completion/bash_completion
@@ -61,9 +60,6 @@ fi
 # Add personal libraries to python
 export PYTHONPATH="/home/robin/py"
 
-# WSL Settings
-LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/usr/local/cuda/extras/CUPTI/lib64"
-
 # Use nvim or vim depending on what's available
 if command -v nvim &> /dev/null; then
   export EDITOR='nvim'
@@ -72,3 +68,4 @@ else
   export EDITOR='vim'
   export VISUAL='vim'
 fi
+
