@@ -69,3 +69,4 @@ else
   export VISUAL='vim'
 fi
 
+export PAGER='less'

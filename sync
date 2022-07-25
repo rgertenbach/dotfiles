@@ -62,7 +62,6 @@ parser_push = subparsers.add_parser(
 parser_push.set_defaults(func=push)
 
 
-
 def main() -> None:
   args = parser.parse_args()
   syncer = synclib.Syncer(args.tilde, DEFAULT_HOMEDIR, 

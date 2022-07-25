@@ -2,9 +2,9 @@
 
 import dataclasses
 import datetime
-import logging
 import os
 import shutil
+import subprocess
 
 from typing import Callable, Generator, Iterable
 
@@ -66,10 +66,13 @@ def copy_file(dest: str,
     raise FileNotFoundError('source filepath %s not found.' % source)
 
   os.makedirs(os.path.dirname(dest), exist_ok=True)
+  is_newer = os.path.getmtime(source) > os.path.getmtime(dest)
+  is_different = bool(diff(dest, source))
   
   permission_to_overwrite = (
     not os.path.exists(dest)
-    or os.path.getmtime(source) > os.path.getmtime(dest)
+    or is_newer
+    or not is_different
     or (handler is not None and handler(dest, source)))
     
   if overwrite_newer or permission_to_overwrite:
@@ -82,12 +85,34 @@ def formatted_mtime(filepath: str, fmt: str = '%F %T') -> str:
       .strftime(fmt))
 
 
+def diff(dest: str, src: str) -> bytes:
+  'Runs diff on two files'
+  d = subprocess.run(['diff', dest, src], capture_output=True)
+  return d.stdout
+
+def page(text: bytes) -> None:
+  'Opens a text in less'
+  pager = os.getenv('PAGER') or 'less'
+  subprocess.run([pager], input=text)
+
+
 def ask_handler(dest: str, src: str) -> bool:
+  direct_answers = {'yes', 'y', 'no', 'n'}
+  acceptable_answers = direct_answers | {'diff', 'd'}
   describe = lambda fp: f'{fp} ({formatted_mtime(fp)})'
-  query = f'{describe(dest)} is newer than {describe(src)}, overwrite (yes/no)?'
-  acceptable_answers = {'yes', 'no'}
-  while (answer := input(query)) not in acceptable_answers:
+  warning = f'{describe(dest)} is newer than {describe(src)} and different'
+  query = f'{warning}, overwrite ((Y)es/(N)o/(D)iff)? '
+
+  def input_loop() -> str:
+    while (answer := input(query)).lower() not in acceptable_answers:
+      continue
+    return answer
+
+  while (answer := input_loop()) not in direct_answers:
+    if answer in {'d', 'diff'}:
+      page(diff(dest, src))
     continue
+
   return answer == 'yes'
 
 
@@ -99,6 +124,10 @@ class Syncer:
   handler: Handler | None = None
   verbose: bool = False
   dry_run: bool = True
+
+  def __post_init__(self):
+    if self.dry_run:
+      print('In dry run mode!')
 
   def convert_to_local_path(self, filename: str) -> str:
     return convert_to_local_path(filename, self.local_homedir)
