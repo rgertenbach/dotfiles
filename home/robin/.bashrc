@@ -33,22 +33,14 @@ shopt -s globstar
 # Use vi mode with escape
 set -o vi
 
-# set variable identifying the chroot you work in (used in the prompt below)
-if [ -z "${debian_chroot:-}" ] && [ -r /etc/debian_chroot ]; then
-    debian_chroot=$(cat /etc/debian_chroot)
-fi
-
 # colored GCC warnings and errors
 export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
 
 # Add personal files and directories if they exist.
 [[ -f ~/.bash_aliases ]] && . ~/.bash_aliases
 [[ -f ~/.bash_prompt ]] && . ~/.bash_prompt
-[[ -d $HOME/bin ]] && export PATH="${PATH}:${HOME}/bin"
 
-# enable programmable completion features (you don't need to enable
-# this, if it's already enabled in /etc/bash.bashrc and /etc/profile
-# sources /etc/bash.bashrc).
+# enable programmable completion features 
 if ! shopt -oq posix; then
   if [ -f /usr/share/bash-completion/bash_completion ]; then
     . /usr/share/bash-completion/bash_completion
@@ -59,6 +51,11 @@ fi
 
 # Add personal libraries to python
 export PYTHONPATH="/home/robin/py"
+
+# WSL Settings
+LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/usr/local/cuda/extras/CUPTI/lib64"
+export BROWSER='wslview'  # WSL only!
+# End of WSL Settings
 
 # Use nvim or vim depending on what's available
 if command -v nvim &> /dev/null; then

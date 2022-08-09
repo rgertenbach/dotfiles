@@ -16,7 +16,7 @@ set expandtab " Spaces instead of tabs
 set shiftwidth=2 " Auto indent spaces
 set smartindent " Enable smart-indent
 set smarttab " Enable smart-tabs
-set softtabstop=2 " Number of spaces per tab
+set softtabstop=4 " Number of spaces per tab
 
 set ruler " Show row and column ruler information
 
@@ -26,7 +26,7 @@ set backspace=indent,eol,start
 " Highlight if over 80 cols
 call matchadd('ColorColumn', '\%81v', -1)
 
-set clipboard=unnamedplus " System Clipboard via "=y
+set clipboard=unnamedplus
 
 set pastetoggle=<F2> " Allow pasting multiple line without auto-indent
 
