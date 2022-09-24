@@ -66,11 +66,12 @@ def copy_file(dest: str,
     raise FileNotFoundError('source filepath %s not found.' % source)
 
   os.makedirs(os.path.dirname(dest), exist_ok=True)
-  is_newer = os.path.getmtime(source) > os.path.getmtime(dest)
-  is_different = bool(diff(dest, source))
+  dest_exists = os.path.exists(dest)
+  is_newer = dest_exists and os.path.getmtime(source) > os.path.getmtime(dest)
+  is_different = dest_exists and bool(diff(dest, source))
   
   permission_to_overwrite = (
-    not os.path.exists(dest)
+    not dest_exists
     or is_newer
     or not is_different
     or (handler is not None and handler(dest, source)))

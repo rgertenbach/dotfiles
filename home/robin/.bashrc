@@ -67,7 +67,7 @@ else
 fi
 
 if command -v nvim &> /dev/null; then
-  export PAGER=most
+  export PAGER='most'
 else
   export PAGER='less'
 fi

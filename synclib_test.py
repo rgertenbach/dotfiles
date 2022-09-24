@@ -70,6 +70,16 @@ class TestSyncLib(unittest.TestCase):
         synclib.copy_file(new_dest.name, source.name, False, no_handler)
         with open(new_dest.name) as f:
           self.assertEqual('', f.read())
+
+  def test_copy_file_handles_missing_dest(self):
+    no_handler = lambda dest, src: False
+    with tempfile.NamedTemporaryFile() as source:
+      with open(source.name, 'w') as f:
+        f.writelines('a\nb')
+      new_dest = tempfile.NamedTemporaryFile()
+      synclib.copy_file(new_dest.name, source.name, False, no_handler)
+      with open(new_dest.name) as f:
+        self.assertEqual('', f.read())
       
 
 if __name__ == '__main__':
