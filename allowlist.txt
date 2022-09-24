@@ -1,6 +1,7 @@
 ~/.bash_aliases
 ~/.bash_prompt
 ~/.bashrc
+~/.mostrc
 ~/.tmux.conf
 ~/.vimrc
 ~/.config/nvim/init.vim

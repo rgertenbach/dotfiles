@@ -66,4 +66,9 @@ else
   export VISUAL='vim'
 fi
 
-export PAGER='less'
+if command -v nvim &> /dev/null; then
+  export PAGER=most
+else
+  export PAGER='less'
+fi
+
