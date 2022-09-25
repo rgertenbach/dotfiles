@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import argparse
+import sys
 
 import synclib
 
@@ -64,6 +65,9 @@ parser_push.set_defaults(func=push)
 
 def main() -> None:
   args = parser.parse_args()
+  if 'func' not in args:
+    parser.print_help()
+    exit(1)
   syncer = synclib.Syncer(args.tilde, DEFAULT_HOMEDIR, 
                           overwrite_newer=args.overwrite_newer,
                           handler=synclib.ask_handler,
