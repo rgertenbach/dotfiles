@@ -4,5 +4,5 @@
 ~/.mostrc
 ~/.tmux.conf
 ~/.vimrc
-~/.config/nvim/init.vim
+~/.config/nvim/init.lua
 ~/.config/nvim/plugins.lua
