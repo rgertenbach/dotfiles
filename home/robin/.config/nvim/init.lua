@@ -36,6 +36,7 @@ vim.opt.undolevels = 1000
 vim.opt.backspace = "indent,eol,start"
 
 
+-- Doesn't seem to work well in lua.
 vim.cmd([[
 call matchadd('ColorColumn', '\%81v', -1)  " Highlight if over 80 cols
 ]])
@@ -55,8 +56,8 @@ augroup end
 ]])
 
 -- Python autocmds
+vim.g.python_recommended_style = 0  -- Disable automatic pep8-ing.
 vim.cmd([[
-let g:python_recommended_style = 0 " Disable automatic pep8-ing.
 augroup vimrc_py
   autocmd!
   " :make runs the current file with python3
@@ -65,15 +66,13 @@ augroup end
 ]])
 
 
+
 -- Plugins (vimplug)
 vim.cmd([[
 call plug#begin()
 Plug 'neovim/nvim-lspconfig'
 Plug 'hrsh7th/nvim-cmp'  " Autocomplete
 call plug#end()
-
-" lua require('lspconfig').pyright.setup{}  " npm -g install pyright
-" lua require('lspconfig').ccls.setup{}  " apt install ccls
 ]])
 
 require('lspconfig').pyright.setup{}  -- npm -g install pyright
