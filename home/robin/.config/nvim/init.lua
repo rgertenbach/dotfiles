@@ -72,6 +72,7 @@ vim.cmd([[
 call plug#begin()
 Plug 'neovim/nvim-lspconfig'
 Plug 'hrsh7th/nvim-cmp'  " Autocomplete
+Plug 'gabrielelana/vim-markdown'
 call plug#end()
 ]])
 
