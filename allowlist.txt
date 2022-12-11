@@ -6,3 +6,4 @@
 ~/.vimrc
 ~/.config/nvim/init.lua
 ~/.config/nvim/plugins.lua
+~/.config/nvim/lua-ls.lua

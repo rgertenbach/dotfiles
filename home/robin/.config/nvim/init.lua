@@ -32,8 +32,10 @@ vim.opt.clipboard = "unnamedplus"
 vim.opt.pastetoggle = "<F2>"  -- Allow pasting multiple line without auto-indent
 
 vim.opt.undolevels = 1000
-
 vim.opt.backspace = "indent,eol,start"
+
+vim.keymap.set('n', '<C-u>', '<C-u>zz')
+vim.keymap.set('n', '<C-d>', '<C-d>zz')
 
 
 -- Doesn't seem to work well in lua.
@@ -78,3 +80,13 @@ call plug#end()
 
 require('lspconfig').pyright.setup{}  -- npm -g install pyright
 require('lspconfig').ccls.setup{}  -- apt install ccls
+
+-- cd ~/.config/nvim
+-- git clone  --depth=1 https://github.com/sumneko/lua-language-server
+-- cd lua-language-server
+-- git submodule update --depth 1 --init --recursive
+-- cd 3rd/luamake
+-- ./compile/install.sh
+-- cd ../..
+-- ./3rd/luamake/luamake rebuild
+dofile('/home/robin/.config/nvim/lua-ls.lua')

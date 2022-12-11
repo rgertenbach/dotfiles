@@ -67,3 +67,5 @@ else
 fi
 
 command -v most &> /dev/null && export PAGER='most' || export PAGER='less'
+
+alias luamake=/home/robin/.config/nvim/lua-language-server/3rd/luamake/luamake
