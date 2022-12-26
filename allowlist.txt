@@ -5,5 +5,11 @@
 ~/.tmux.conf
 ~/.vimrc
 ~/.config/nvim/init.lua
-~/.config/nvim/plugins.lua
-~/.config/nvim/lua-ls.lua
+~/.config/nvim/plugin/packer_compiled.lua
+~/.config/nvim/lua/remaps.lua
+~/.config/nvim/lua/plugins.lua
+~/.config/nvim/after/plugin/lsp.lua
+~/.config/nvim/after/plugin/colors.lua
+~/.config/nvim/after/plugin/undotree.lua
+~/.config/nvim/after/plugin/telescope.lua
+~/.config/nvim/after/plugin/treesitter.lua

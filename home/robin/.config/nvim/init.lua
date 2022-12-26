@@ -1,3 +1,6 @@
+require "remaps"
+require "plugins"
+
 vim.cmd([[
   set runtimepath^=~/.vim runtimepath+=~/.vim/after
   let &packpath=&runtimepath
@@ -68,25 +71,3 @@ augroup end
 ]])
 
 
-
--- Plugins (vimplug)
-vim.cmd([[
-call plug#begin()
-Plug 'neovim/nvim-lspconfig'
-Plug 'hrsh7th/nvim-cmp'  " Autocomplete
-Plug 'gabrielelana/vim-markdown'
-call plug#end()
-]])
-
-require('lspconfig').pyright.setup{}  -- npm -g install pyright
-require('lspconfig').ccls.setup{}  -- apt install ccls
-
--- cd ~/.config/nvim
--- git clone  --depth=1 https://github.com/sumneko/lua-language-server
--- cd lua-language-server
--- git submodule update --depth 1 --init --recursive
--- cd 3rd/luamake
--- ./compile/install.sh
--- cd ../..
--- ./3rd/luamake/luamake rebuild
-dofile('/home/robin/.config/nvim/lua-ls.lua')
