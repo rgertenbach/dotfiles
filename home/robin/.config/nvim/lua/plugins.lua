@@ -15,7 +15,7 @@ return require("packer").startup(function(use)
   -- Syntax tree manager for syntax highlighting
   use("nvim-treesitter/nvim-treesitter", {run = ":TSUpdate"})
   -- :TSPlaygroundToggle to browse the AST
-  use("nvim-treesitter/playground", {run = ":TSUpdate"})
+  use("nvim-treesitter/playground")
 
   use("mbbill/undotree")
 
