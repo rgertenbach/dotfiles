@@ -47,12 +47,11 @@ call matchadd('ColorColumn', '\%81v', -1)  " Highlight if over 80 cols
 ]])
 
 
--- netrw settings
+-- netrw settings - don't use the tree (liststyle = 3), it's broken.
 vim.g.netrw_banner = 0  -- Hide banner
-vim.g.netrw_liststyle = 3  -- Show tree
 vim.g.netrw_altv = 1  -- Split to the right with v
 vim.g.netrw_winsize = 25  -- Quarter of the width
-vim.g.netrw_chgwin = -1  -- Open in leftmost non-netrw buffer with enter.
+vim.g.netrw_keepdir = 0  -- Change current directory with the browsing dir.
 
 
 -- C-file autocmds
