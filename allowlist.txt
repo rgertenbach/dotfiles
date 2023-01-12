@@ -5,7 +5,6 @@
 ~/.tmux.conf
 ~/.vimrc
 ~/.config/nvim/init.lua
-~/.config/nvim/plugin/packer_compiled.lua
 ~/.config/nvim/lua/remaps.lua
 ~/.config/nvim/lua/plugins.lua
 ~/.config/nvim/after/plugin/lsp.lua
