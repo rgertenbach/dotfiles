@@ -41,10 +41,7 @@ vim.keymap.set('n', '<C-u>', '<C-u>zz')
 vim.keymap.set('n', '<C-d>', '<C-d>zz')
 
 
--- Doesn't seem to work well in lua.
-vim.cmd([[
-call matchadd('ColorColumn', '\%81v', -1)  " Highlight if over 80 cols
-]])
+vim.fn.matchadd('ColorColumn', '\\%81v.\\+', -1)  -- Highlight if over 80 cols.
 
 
 -- netrw settings - don't use the tree (liststyle = 3), it's broken.

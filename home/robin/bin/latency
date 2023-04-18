@@ -1,0 +1,103 @@
+#!/usr/bin/env python3
+
+from typing import Iterator
+
+import argparse
+from collections import deque
+import datetime
+import subprocess
+import time
+
+PACKET_LOST = -1
+
+
+class Pinger:
+  def __init__(self, ip: str, timeout_seconds: float, count: int):
+    self.ip = ip
+    self.timeout_seconds = timeout_seconds
+    self.count = count
+    self.packets_lost = 0
+    self.total_latency = 0
+    self.history = deque()
+
+  def ping(self) -> int:
+    """Returns the latency in ms or -1 if the packet got lost."""
+    result = subprocess.run(
+        ['ping', self.ip, '-c 1', f'-W {self.timeout_seconds}', '-q'],
+        capture_output=True)
+    output = result.stdout.decode('ascii')
+    loss, time = output.split('\n')[3:5]
+    is_lost = '100%' in loss
+    rtt = time.lstrip('rtt min/avg/max/mdev = ').split('/')[0]
+    return PACKET_LOST if is_lost else round(float(rtt))
+
+  def update(self) -> tuple[int, int, int, int]:
+    """Pings and returns latest summary stats.
+
+    Returns:
+      The latest round trip time in milliseconds.
+      The number of packets sent most recently.
+      The number of packets lost amont the ones sent.
+      The total latency of all recent successful pings.
+    """
+    self.history.append(self.ping())
+    if self.history[-1] == PACKET_LOST:
+      self.packets_lost += 1
+    else:
+      self.total_latency += self.history[-1]
+
+    if len(self.history) > self.count:
+      oldest = self.history.popleft()
+      if oldest == PACKET_LOST:
+        self.packets_lost -= 1
+      else:
+        self.total_latency -= oldest
+
+    return (
+        self.history[-1], 
+        len(self.history), 
+        self.packets_lost, 
+        self.total_latency)
+
+  def feed(self, every_seconds: float) -> Iterator[tuple[int, int, int, int]]:
+    """Yields the latest stats at most every_seconds."""
+    while True:
+      last_ping = datetime.datetime.now()
+      yield self.update()
+      elapsed = datetime.datetime.now().timestamp() - last_ping.timestamp()
+      wait_seconds = 0 if elapsed > every_seconds else every_seconds - elapsed
+      time.sleep(wait_seconds)
+
+
+def prettify(latest_latency: int, sent: int, lost: int, total_latency: int) -> str:
+  """Turns ping latency stats into TSV."""
+  current_latency = '-' if latest_latency == PACKET_LOST else f'{latest_latency} ms'
+  avg_loss = lost / sent
+  returned = sent - lost
+  avg_latency = f'{total_latency / returned:.0f} ms' if returned else '-'
+  return f'{current_latency}\t{avg_loss:.0%}\t{avg_latency}'
+
+
+def main():
+  parser = argparse.ArgumentParser(prog='Latency - Get the current latency')
+  parser.add_argument(
+      '--ip', type=str, default='8.8.8.8', help='The ip to ping')
+  parser.add_argument(
+      '--timeout', '-W', type=float, default=1,
+      help='The amount of seconds to wait for a response.')
+  parser.add_argument(
+      '--wait', '-w', type=float, default=1,
+      help='The minimum amount of seconds to wait between consecutive pings.')
+  parser.add_argument(
+      '--count', '-c', type=int, default='10',
+      help='The amount of pings of which to keep a tally of packet loss.'
+           'Higher values give smoother averages.'
+           'lower values give more recent performance.')
+  args = parser.parse_args()
+  pinger = Pinger(args.ip, args.timeout, args.count)
+  for latest_latency, sent, lost, total_latency in pinger.feed(args.wait):
+    print(prettify(latest_latency, sent, lost, total_latency))
+
+
+if __name__ == '__main__':
+  main()
