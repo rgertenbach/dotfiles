@@ -17,8 +17,7 @@ return require("packer").startup(function(use)
 
   -- Fuzzy finder
   use {
-    "nvim-telescope/telescope.nvim", tag = "0.1.0",
-    -- or                          , branch = "0.1.x",
+    "nvim-telescope/telescope.nvim", tag = "0.1.2",
     requires = { {"nvim-lua/plenary.nvim"} }
   }
 
@@ -30,24 +29,28 @@ return require("packer").startup(function(use)
   -- :TSPlaygroundToggle to browse the AST
   use("nvim-treesitter/playground")
 
+  use("williamboman/mason.nvim")
   use("mbbill/undotree")
 
   -- LSP stuff
   use {
     "VonHeikemen/lsp-zero.nvim",
     requires = {
-      -- LSP Support
+      -- LSP Support, required.
       {"neovim/nvim-lspconfig"},
-      {"williamboman/mason.nvim"},
+      {
+        "williamboman/mason.nvim",
+        run = function() pcall(vim.cmd, 'MasonUpdate') end,
+      },
       {"williamboman/mason-lspconfig.nvim"},
 
       -- Autocompletion
-      {"hrsh7th/nvim-cmp"},
       {"hrsh7th/cmp-buffer"},
-      {"hrsh7th/cmp-path"},
-      {"saadparwaiz1/cmp_luasnip"},
-      {"hrsh7th/cmp-nvim-lsp"},
+      {"hrsh7th/cmp-nvim-lsp"},  -- Required
       {"hrsh7th/cmp-nvim-lua"},
+      {"hrsh7th/cmp-path"},  -- Find files in path
+      {"hrsh7th/nvim-cmp"},  -- Required
+      {"saadparwaiz1/cmp_luasnip"},  -- Required
 
       -- Snippets
       {"L3MON4D3/LuaSnip"},

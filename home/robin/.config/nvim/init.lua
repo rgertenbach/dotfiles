@@ -37,8 +37,10 @@ vim.opt.pastetoggle = "<F2>"  -- Allow pasting multiple line without auto-indent
 vim.opt.undolevels = 1000
 vim.opt.backspace = "indent,eol,start"
 
+-- Center when moving half pages.
 vim.keymap.set('n', '<C-u>', '<C-u>zz')
 vim.keymap.set('n', '<C-d>', '<C-d>zz')
+vim.opt.scrolloff = 8  -- Look at least 8 lines ahead.
 
 
 vim.fn.matchadd('ColorColumn', '\\%81v.\\+', -1)  -- Highlight if over 80 cols.
@@ -50,6 +52,7 @@ vim.g.netrw_altv = 1  -- Split to the right with v
 vim.g.netrw_winsize = 25  -- Quarter of the width
 vim.g.netrw_keepdir = 0  -- Change current directory with the browsing dir.
 
+vim.opt.signcolumn = "yes"  -- Reserve space for diagnostic icons.
 
 -- C-file autocmds
 -- TODO: Make this apply ONLY to the c files, not non-c files opened after.
@@ -66,12 +69,10 @@ augroup end
 
 -- Python autocmds
 vim.g.python_recommended_style = 0  -- Disable automatic pep8-ing.
-vim.cmd([[
-augroup vimrc_py
-  autocmd!
-  " :make runs the current file with python3
-  autocmd BufNewFile,BufEnter *.py set makeprg=/usr/bin/env\ python3\ %<.py"
-augroup end
-]])
-
-
+vim.api.nvim_create_autocmd(
+  {"BufNewFile", "BufEnter"},
+  {
+    pattern = "*.py",
+    callback = function() vim.makeprg = "/usr/bin/env python3 %<.py" end
+  }
+)

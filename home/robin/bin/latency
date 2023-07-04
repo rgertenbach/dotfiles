@@ -6,6 +6,7 @@ import argparse
 from collections import deque
 import datetime
 import subprocess
+import sys
 import time
 
 PACKET_LOST = -1
@@ -75,7 +76,7 @@ def prettify(latest_latency: int, sent: int, lost: int, total_latency: int) -> s
   avg_loss = lost / sent
   returned = sent - lost
   avg_latency = f'{total_latency / returned:.0f} ms' if returned else '-'
-  return f'{current_latency}\t{avg_loss:.0%}\t{avg_latency}'
+  return f'Ping: {current_latency} (avg: {avg_latency}) Loss: {avg_loss:.0%}'
 
 
 def main():
@@ -97,6 +98,7 @@ def main():
   pinger = Pinger(args.ip, args.timeout, args.count)
   for latest_latency, sent, lost, total_latency in pinger.feed(args.wait):
     print(prettify(latest_latency, sent, lost, total_latency))
+    sys.stdout.flush()  # To avoid multiline buffering.
 
 
 if __name__ == '__main__':
