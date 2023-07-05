@@ -16,7 +16,7 @@ local lsp = require("lsp-zero").preset({
 -- gl: Display diagnostics
 -- [d: Previous diag
 -- ]d: Next diag
-lsp.on_attach(function(client, bufnr)
+lsp.on_attach(function(_, bufnr)
   lsp.default_keymaps({
     buffer = bufnr,
     preserve_mappings = false
@@ -25,7 +25,7 @@ end
 )
 
 -- Fix undefined global 'vim'
-lsp.configure('lua-language-server', {
+lsp.configure('lua_ls', {
   settings = {
     Lua = {
       diagnostics = {

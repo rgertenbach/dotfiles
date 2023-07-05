@@ -62,8 +62,6 @@ vim.cmd([[
 augroup vimrc_c
   autocmd!
   autocmd BufEnter *.c,*.h set cindent
-  " autocmd BufNewFile *.c,*.h set makeprg=cc -o=%< -Wall -Wextra
-  " autocmd BufLeave *.c,*.h set autoindent
 augroup end
 ]])
 

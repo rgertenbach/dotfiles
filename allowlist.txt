@@ -13,4 +13,5 @@
 ~/.config/nvim/after/plugin/telescope.lua
 ~/.config/nvim/after/plugin/treesitter.lua
 ~/.config/nvim/after/plugin/netrw.lua
+~/.gmailctl/config.jsonnet
 ~/bin/latency
