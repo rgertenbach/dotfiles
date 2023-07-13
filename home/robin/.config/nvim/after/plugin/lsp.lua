@@ -28,15 +28,21 @@ end
 lsp.configure('lua_ls', {
   settings = {
     Lua = {
+      runtime = {
+          version = "LuaJIT",  -- LuaJIT for NVIM.
+      },
       diagnostics = {
         globals = { 'vim' }
-      }
+      },
     }
   }
 })
 
 local cmp = require('cmp')
 cmp.setup({
+  sources = {
+    { name = 'nvim_lua' }
+  },
   mapping = {
     -- Enter key to confirm completion
     ['<CR>'] = cmp.mapping.confirm({select = false}),

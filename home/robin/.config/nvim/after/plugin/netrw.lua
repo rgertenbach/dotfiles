@@ -1,3 +1,14 @@
+--[[vim.api.nvim_create_autocmd(
+  { "FileType" },
+  {
+    pattern = "netrw",
+    callback = function()
+      vim.keymap.set("n", "<C-c>", ":bd<Enter>")
+      vim.keymap.set("n", "<leader>e", ":bd<Enter>")
+    end,
+    group = vim.api.nvim_create_augroup("NetrwMapping", { clear = true })
+  }
+)]]
 vim.cmd([[
 augroup netrw_mapping
 autocmd!

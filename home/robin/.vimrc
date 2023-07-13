@@ -26,8 +26,6 @@ set backspace=indent,eol,start
 " Highlight if over 80 cols
 call matchadd('ColorColumn', '\%81v', -1)
 
-set clipboard=unnamedplus
-
 set pastetoggle=<F2> " Allow pasting multiple line without auto-indent
 
 " C-file autocmds
