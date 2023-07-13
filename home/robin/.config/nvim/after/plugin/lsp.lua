@@ -53,6 +53,7 @@ cmp.setup({
 })
 
 local lspconfig = require('lspconfig')
+
 -- Not supported in mason use apt install ccls
 lspconfig.ccls.setup{}
 lsp.setup()
