@@ -1,8 +1,3 @@
-// NOTE: This is a simple example.
-// Please refer to https://github.com/mbrt/gmailctl#configuration for docs about
-// the config format. Don't forget to change the configuration before to apply it
-// to your own inbox!
-
 // Import the standard library
 local lib = import 'gmailctl.libsonnet';
 
@@ -29,6 +24,9 @@ local toMe = { to: me };
           { from: '*@marcus.co.uk' },
           { from: '*@revolut.co.uk' },
           { from: '*@transferwise.co.uk' },
+          { from: '*@wise.co.uk' },
+          { from: '*morganstanley.com' },
+          { from: '*halifax.co.uk' },
         ],
       },
       actions: { labels: ['Banking'] },
@@ -68,6 +66,19 @@ local toMe = { to: me };
         ],
       },
       actions: { labels: ['Flat/Agency'] },
+    },
+
+    // Relocation
+    {
+      filter: {
+        or: [
+          { from: '*@squareonerelo.com' },  // Shipping
+          { from: '*@bennettinternational.com' },  // School
+          { from: '*@relocity.com' },  // Destination Services
+          { from: '*@cartus.com' },  // Overall Services
+        ]
+      },
+      actions: { labels: ['Relo'] },
     },
 
     // Spam
