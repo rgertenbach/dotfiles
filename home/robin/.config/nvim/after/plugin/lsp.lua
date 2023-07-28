@@ -1,4 +1,5 @@
 local lsp = require("lsp-zero").preset({
+
   manage_nvim_cmp = {
     documentation_window = true -- Show autocomplete
   }
@@ -56,4 +57,6 @@ local lspconfig = require('lspconfig')
 
 -- Not supported in mason use apt install ccls
 lspconfig.ccls.setup{}
+
 lsp.setup()
+vim.keymap.set("n", "<leader>xx", ":TroubleToggle<CR>")

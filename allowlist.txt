@@ -5,11 +5,11 @@
 ~/.tmux.conf
 ~/.vimrc
 ~/.config/nvim/init.lua
-~/.config/nvim/rgertenbach/colorbar.lua
-~/.config/nvim/rgertenbach/init.lua
-~/.config/nvim/rgertenbach/opts.lua
-~/.config/nvim/rgertenbach/plugins.lua
-~/.config/nvim/rgertenbach/remaps.lua
+~/.config/nvim/lua/rgertenbach/colorbar.lua
+~/.config/nvim/lua/rgertenbach/init.lua
+~/.config/nvim/lua/rgertenbach/opts.lua
+~/.config/nvim/lua/rgertenbach/plugins.lua
+~/.config/nvim/lua/rgertenbach/remaps.lua
 ~/.config/nvim/after/plugin/lsp.lua
 ~/.config/nvim/after/plugin/colors.lua
 ~/.config/nvim/after/plugin/undotree.lua

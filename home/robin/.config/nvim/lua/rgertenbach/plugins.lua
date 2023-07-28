@@ -23,7 +23,6 @@ return require("packer").startup(function(use)
       {"nvim-tree/nvim-web-devicons"},
     }
   }
-  use("sso://googler@user/vintharas/telescope-codesearch.nvim")
 
   -- Colorscheme
   use("EdenEast/nightfox.nvim")
