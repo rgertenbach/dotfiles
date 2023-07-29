@@ -30,6 +30,7 @@ lsp.configure('lua_ls', {
   settings = {
     Lua = {
       runtime = {
+          -- version = "Lua 5.4",  -- Lua 5.4 for regular lua.
           version = "LuaJIT",  -- LuaJIT for NVIM.
       },
       diagnostics = {
