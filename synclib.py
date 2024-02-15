@@ -2,6 +2,7 @@
 
 import dataclasses
 import datetime
+import glob
 import os
 import shutil
 import subprocess
@@ -12,7 +13,7 @@ Handler = Callable[[str, str], bool]
 
 
 def load_files_to_sync(allowlist_filepath: str) -> Generator[str, None, None]:
-  'Loads the files to sync from the allowlist.'
+  """Loads the files to sync from the allowlist."""
   with open(allowlist_filepath) as f:
     for filepath in f.readlines():
       if stripped := filepath.strip():
@@ -42,9 +43,9 @@ def convert_to_repo_path(filepath: str, homedir: str) -> str:
   return remove_leading_slash(replace_tilde(filepath, homedir))
 
 
-def copy_file(dest: str, 
-              source: str, 
-              overwrite_newer: bool = False, 
+def copy_file(dest: str,
+              source: str,
+              overwrite_newer: bool = False,
               handler: Handler | None = None) -> None:
   """Moves a file from the source to the destination.
 
@@ -69,15 +70,26 @@ def copy_file(dest: str,
   dest_exists = os.path.exists(dest)
   is_newer = dest_exists and os.path.getmtime(source) > os.path.getmtime(dest)
   is_different = dest_exists and bool(diff(dest, source))
-  
+
   permission_to_overwrite = (
     not dest_exists
     or is_newer
     or not is_different
     or (handler is not None and handler(dest, source)))
-    
+
   if overwrite_newer or permission_to_overwrite:
     shutil.copyfile(source, dest, follow_symlinks=False)
+
+def copy_files(
+    pattern: str,
+    dest_home: Callable[[str], str],
+    source_home: Callable[[str], str], 
+    overwrite_newer: bool = False,
+    handler: Handler | None = None
+) -> None:
+  for src_filepath in glob.glob(source_home(pattern)):
+
+
 
 
 def formatted_mtime(filepath: str, fmt: str = '%F %T') -> str:
@@ -138,18 +150,18 @@ class Syncer:
 
   def copy_file(self, dest: str, src: str) -> None:
     if self.verbose:
-      print('{}oving {} to {}.'.format('Pretend m' if self.dry_run else 'M', 
+      print('{}oving {} to {}.'.format('Pretend m' if self.dry_run else 'M',
                                        src,
                                        dest))
     if not self.dry_run:
       copy_file(dest, src, self.overwrite_newer, self.handler)
 
   def pull_file(self, filepath: str) -> None:
-    self.copy_file(self.convert_to_local_path(filepath), 
+    self.copy_file(self.convert_to_local_path(filepath),
                    self.convert_to_repo_path(filepath))
 
   def push_file(self, filepath: str) -> None:
-    self.copy_file(self.convert_to_repo_path(filepath), 
+    self.copy_file(self.convert_to_repo_path(filepath),
                    self.convert_to_local_path(filepath))
 
   def pull_files(self, filepaths: Iterable[str]) -> None:
@@ -159,4 +171,3 @@ class Syncer:
   def push_files(self, filepaths: Iterable[str]) -> None:
     for filepath in filepaths:
       self.push_file(filepath)
-

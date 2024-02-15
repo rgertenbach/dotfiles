@@ -5,16 +5,6 @@
 ~/.tmux.conf
 ~/.vimrc
 ~/.config/nvim/init.lua
-~/.config/nvim/lua/rgertenbach/colorbar.lua
-~/.config/nvim/lua/rgertenbach/init.lua
-~/.config/nvim/lua/rgertenbach/opts.lua
-~/.config/nvim/lua/rgertenbach/plugins.lua
-~/.config/nvim/lua/rgertenbach/remaps.lua
-~/.config/nvim/after/plugin/lsp.lua
-~/.config/nvim/after/plugin/colors.lua
-~/.config/nvim/after/plugin/undotree.lua
-~/.config/nvim/after/plugin/telescope.lua
-~/.config/nvim/after/plugin/treesitter.lua
-~/.config/nvim/after/plugin/netrw.lua
+~/.config/nvim/lua/rgertenbach/**
 ~/.gmailctl/config.jsonnet
 ~/bin/latency
