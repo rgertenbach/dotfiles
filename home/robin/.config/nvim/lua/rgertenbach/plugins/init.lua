@@ -57,4 +57,9 @@ return {
       vim.keymap.set("n", "<leader>ast", vim.cmd.TSPlaygroundToggle)
     end,
   },
+
+  {
+    "numToStr/Comment.nvim",
+    config = function() require("Comment").setup() end,
+  },
 }

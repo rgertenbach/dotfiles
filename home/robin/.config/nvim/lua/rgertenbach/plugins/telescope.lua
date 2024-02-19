@@ -24,8 +24,21 @@ return {
       vim.keymap.set('n', '<leader>fpf', ":Telescope codesearch find_files<CR>")
       vim.keymap.set('n', '<leader>fpq', ":Telescope codesearch find_query<CR>")
 
-      telescope.setup({})
+      telescope.setup({
+        extensions = {
+          file_browser = {
+            hijack_netrw = true
+          },
+        },
+      })
     end
+  },
+  {
+    "nvim-telescope/telescope-file-browser.nvim",
+    dependencies = {
+      "nvim-telescope/telescope.nvim",
+    },
+    config = function() require("telescope").load_extension("file_browser") end,
   },
 }
 

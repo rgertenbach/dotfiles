@@ -1,7 +1,7 @@
 vim.g.mapleader = " "
 
 -- Toggle netrw to the left
-vim.keymap.set("n", "<leader>e", vim.cmd.Lex)
+vim.keymap.set("n", "<leader>e", ":Telescope file_browser<CR>")
 
 -- Sometimes <C-Space> is misinterpreted as <C-@>.
 vim.keymap.set("i", "<C-@>", "<C-Space>")
