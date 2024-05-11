@@ -8,6 +8,9 @@ vim.opt.visualbell = true  -- No beep.
 vim.opt.termguicolors = true -- 24-bit colors.
 vim.opt.signcolumn = "yes"  -- Reserve space for diagnostic icons.
 vim.opt.showmatch = true  -- Highlight matching brace.
+vim.opt.splitright = true  -- Open vertical splits to the right.
+vim.opt.splitbelow = true  -- Open horizontal splits below.
+
 
 -- Indentation
 vim.opt.expandtab = true  -- Spaces instead of tabs.
@@ -36,7 +39,7 @@ vim.api.nvim_create_autocmd(
   {
     pattern = "netrw",
     callback = function()
-      vim.api.nvim_buf_set_keymap(0, "", "<C-c>", ":bd<Enter>", {})
+      vim.api.nvim_buf_set_keymap(0, "", "<C-c>", ":bd<CR>", {})
     end,
     group = "netrw_mapping",
   }

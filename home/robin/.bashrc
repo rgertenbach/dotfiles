@@ -8,16 +8,6 @@ case $- in
       *) return;;
 esac
 
-# don't put duplicate lines or lines starting with space in the history.
-# See bash(1) for more options
-HISTCONTROL=ignoreboth
-
-# append to the history file, don't overwrite it
-shopt -s histappend
-
-# for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
-HISTSIZE=1000
-HISTFILESIZE=2000
 
 # check the window size after each command and, if necessary,
 # update the values of LINES and COLUMNS.
@@ -28,19 +18,22 @@ shopt -s checkwinsize
 shopt -s globstar
 
 # make less more friendly for non-text input files, see lesspipe(1)
-[ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
+[[ -x /usr/bin/lesspipe ]] && eval "$(SHELL=/bin/sh lesspipe)"
 
-# Use vi mode with escape
+# set variable identifying the chroot you work in (used in the prompt below)
+if [ -z "${debian_chroot:-}" ] && [ -r /etc/debian_chroot ]; then
+    debian_chroot=$(cat /etc/debian_chroot)
+fi
+
+# Set Bash to vim mode via ESC
 set -o vi
 
-# colored GCC warnings and errors
-export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
+# disable ctrl+s terminal lock which needs to be unlocked with ctrl+q
+stty -ixon
 
-# Add personal files and directories if they exist.
-[[ -f ~/.bash_aliases ]] && . ~/.bash_aliases
-[[ -f ~/.bash_prompt ]] && . ~/.bash_prompt
-
-# enable programmable completion features 
+# enable programmable completion features (you don't need to enable
+# this, if it's already enabled in /etc/bash.bashrc and /etc/profile
+# sources /etc/bash.bashrc).
 if ! shopt -oq posix; then
   if [ -f /usr/share/bash-completion/bash_completion ]; then
     . /usr/share/bash-completion/bash_completion
@@ -49,23 +42,22 @@ if ! shopt -oq posix; then
   fi
 fi
 
-# Add personal libraries to python
-export PYTHONPATH="/home/robin/py"
-
-# WSL Settings
-LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/usr/local/cuda/extras/CUPTI/lib64"
-export BROWSER='wslview'  # WSL only!
-# End of WSL Settings
-
-# Use nvim or vim depending on what's available
-if command -v nvim &> /dev/null; then
-  export EDITOR='nvim'
-  export VISUAL='nvim'
-else
-  export EDITOR='vim'
-  export VISUAL='vim'
+# Conditional loading of external configs.
+if [ -d ~/.local/bin ]; then
+  export PATH="${PATH}:~/.local/bin"
 fi
 
-command -v most &> /dev/null && export PAGER='most' || export PAGER='less'
+if [ -f ~/.bash_aliases ]; then
+  . ~/.bash_aliases
+fi
 
-alias luamake=/home/robin/.config/nvim/lua-language-server/3rd/luamake/luamake
+if [ -f ~/.bash_prompt ]; then
+  . ~/.bash_prompt
+fi
+
+if [ -f ~/.bash_functions ]; then
+  . ~/.bash_functions
+fi
+
+export TZ='America/Los_Angeles'
+

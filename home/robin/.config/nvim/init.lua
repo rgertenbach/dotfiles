@@ -15,7 +15,8 @@ end
 vim.opt.rtp:prepend(lazypath)
 
 -- Must be set before lazy is set up.
-vim.g.mapleader = ' '
+vim.g.mapleader = ' '  -- <Leader>
+vim.g.maplocalleader = ' '  -- <LocalLeader>
 
 -- Configure PDE
 -- Set up to load rgertenbach first and adds extras after.

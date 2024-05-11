@@ -62,4 +62,31 @@ return {
     "numToStr/Comment.nvim",
     config = function() require("Comment").setup() end,
   },
+
+  {
+    "rgertenbach/ToRepl.nvim",
+    config = function()
+      local torepl = require("torepl")
+      torepl.setup({
+        commands = {
+          python = {
+            cmd = "~/py/venv/bin/ipython -c \"%s\" -i",
+            delimiter = "# PRE",
+          },
+          csv = {
+            cmd = "~/py/venv/bin/python ~/py/csv_loader.py \"%s\"",
+            pass_as = torepl.PassMethod.file,
+          },
+          lua = {
+            cmd = "lua -i \"%s\"",
+            pass_as = torepl.PassMethod.file,
+            after = "os.remove(arg[0])",
+            delimiter = "-- PRE",
+          },
+        }
+      })
+      vim.keymap.set("n", "<leader>run", "<Cmd>ToReplBuffer<CR>")
+      vim.keymap.set("v", "<leader>run", "<Cmd>ToReplSelection<CR>")
+    end
+  },
 }

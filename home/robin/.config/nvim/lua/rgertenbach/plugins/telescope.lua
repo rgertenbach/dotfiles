@@ -19,10 +19,8 @@ return {
       vim.keymap.set('n', '<leader>ff', builtin.find_files)
       vim.keymap.set('n', '<leader>fb', builtin.buffers)
       vim.keymap.set('n', '<leader>fg', builtin.live_grep)
-
-      -- Google Specific.
-      vim.keymap.set('n', '<leader>fpf', ":Telescope codesearch find_files<CR>")
-      vim.keymap.set('n', '<leader>fpq', ":Telescope codesearch find_query<CR>")
+      vim.keymap.set('n', '<leader>fj', builtin.jumplist)
+      vim.keymap.set('n', '<leader>fh', builtin.help_tags)
 
       telescope.setup({
         extensions = {

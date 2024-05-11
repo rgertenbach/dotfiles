@@ -18,7 +18,7 @@ local function config()
       group = "Formatter",
       callback = function()
         if formatters.filetype[vim.bo.filetype] ~= nil then
-          vim.keymap.set("n", "<leader>==", ":Format<CR>", { buffer = 0 })
+          vim.keymap.set("n", "<leader>==", "<cmd>Format<CR>", { buffer = 0 })
         end
       end
     }

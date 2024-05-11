@@ -34,10 +34,10 @@ end
 function m.setup(config)
   m.config.default = config.default
   m.config.mapping = config.mapping or {}
-
+  vim.api.nvim_create_augroup("ColorbarAugroup", {})
   vim.api.nvim_create_autocmd(
     { "BufEnter", "BufNew" },
-    { callback = m.colorbar }
+    { callback = m.colorbar, group = "ColorbarAugroup" }
   )
 end
 
