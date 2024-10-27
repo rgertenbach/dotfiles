@@ -1,0 +1,42 @@
+#!/bin/bash
+
+[[ $# -lt 1 ]] && echo 'Must at least pass scale as %' >&2 && exit 1
+
+logoff='no'
+dpi_set='no'
+scale_regex='^[1-9][0-9][0-9]?$'
+
+set_dpi_x() {
+  local base_dpi=96
+  target_dpi="$((${base_dpi} * $1 / 100))"
+  sed "/Xft\.dpi/s/[0-9]\+/${target_dpi}/" ~/.Xresources --in-place
+}
+
+set_scaling_sway() {
+  local scaling_factor="$(bc --mathlib <<< "$1 / 100")"
+  sed "/output \* scale/s/[0-9.]\+/${scaling_factor::5}/" ~/.config/sway/config --in-place
+}
+
+while [[ $# -gt 0 ]]; do
+  if [[ "$1" == '-f' ]]; then
+    logoff='yes'
+  elif [[ "$1" =~ ${scale_regex} ]]; then
+    target_scale=$1
+    dpi_set='yes'
+  else
+    echo "Unrecognized: \"$1\" pass % scaling between 10 and 999 and optionally -f to log off" >&2
+    exit 1
+  fi
+  shift
+done
+
+[[ ${dpi_set} = 'no' ]] && { echo 'No dpi set' >&2; exit 1; }
+
+if [[ -n $SWAYSOCK ]]; then  # Sway is running
+  set_scaling_sway ${target_scale}
+  [[ "${logoff}" == 'yes' ]] && sway
+else  # i3 or (likely) some X system is running
+  set_dpi_x ${target_scale}
+  [[ "${logoff}" == 'yes' ]] && i3-msg exit
+fi
+

@@ -1,0 +1,2 @@
+SET QueryRequest.accounting_group = 'smb-marketing-analytics';
+SET Module.global_import_path = '/google_src/head/depot/google3';

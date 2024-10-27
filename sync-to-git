@@ -1,0 +1,7 @@
+#!/bin/sh
+
+# Should be run on local copy
+
+git add .
+git commit -m "$1"
+git push

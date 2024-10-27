@@ -1,0 +1,14 @@
+#!/bin/sh
+
+stow -S "$@" \
+  --target="${HOME}" \
+  --dotfiles
+
+# Symlink files instead of directories and overrides.
+# This way we can run `./stow nvim nvim-google` and get the Google specific init
+# file for ~/.config/nvim/init.lua.
+stow "$@" \
+  --target="${HOME}" \
+  --no-folding \
+  --override='.' \
+  --dotfiles

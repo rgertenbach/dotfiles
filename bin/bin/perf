@@ -1,0 +1,37 @@
+#!/bin/bash
+
+# Sets various performance controllers to control clockspeed.
+
+help='Provide "performance" or "battery."' 
+
+[[ "$#" -ne 1 ]] && echo "${help}" 1>&2 && exit 1
+
+case "$1" in
+  'performance' )
+    powerprofiles_setting='performance'
+    cpufreq_setting='performance'
+    ;;
+  'battery' )
+    powerprofiles_setting='balanced'
+    cpufreq_setting='powersave'
+    ;;
+  . )
+    echo "Unsupported mode: \"$1\". ${help}" 1>&2
+    exit 1
+    ;;
+esac
+
+# $1 The cpu number.
+set_cpu_governor() {
+  sudo --askpass cpufreq-set --cpu=$1 --governor="${cpufreq_setting}"
+}
+
+powerprofilesctl set="${powerprofiles_setting}"
+
+SUDO_ASKPASS='/usr/bin/ssh-askpass' set_cpu_governor 0 \
+  || { echo 'CPU Governor unchanged' 1>&2; exit 1; }
+
+for cpu in {1..7}; do
+  set_cpu_governor "${cpu}"
+done
+

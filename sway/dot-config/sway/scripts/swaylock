@@ -1,0 +1,3 @@
+#!/bin/bash
+
+swaylock --image=~/Pictures/forest-painting.png

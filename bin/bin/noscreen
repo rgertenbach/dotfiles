@@ -1,0 +1,8 @@
+#!/bin/sh
+
+# Used for work laptop
+
+swaymsg output '*' disable
+swaymsg output eDP-1 enable
+swaymsg output eDP-1 scale 2
+

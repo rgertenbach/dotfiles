@@ -1,1 +1,6 @@
 __pycache__
+
+# Keep google specific stuff out of personal Github
+/*-google
+/sync-to-g3
+/download
