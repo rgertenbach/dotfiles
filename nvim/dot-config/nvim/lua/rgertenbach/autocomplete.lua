@@ -4,6 +4,16 @@ local cmp = require("cmp")
 local luasnip = require("luasnip")
 local lspkind = require('lspkind')
 
+vim.keymap.set({ "i", "s" }, "<C-l>", function()
+  if luasnip.choice_active() then luasnip.change_choice(1) end
+end)
+vim.keymap.set({ "i", "s" }, "<C-h>", function()
+  if luasnip.choice_active() then luasnip.change_choice(-1) end
+end)
+vim.keymap.set({ "i", "s" }, "<C-y>", function()
+  if luasnip.choice_active() then luasnip.expand_or_jump() end
+end)
+
 cmp.setup({
   mapping = cmp.mapping.preset.insert({
     ["<C-d>"] = cmp.mapping.scroll_docs(-4),

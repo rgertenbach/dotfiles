@@ -80,8 +80,8 @@ return {
           },
         }
       })
-      vim.keymap.set("n", "<C-Enter>", "<Cmd>ToReplBuffer<CR>")
-      vim.keymap.set("v", "<C-Enter>", "<Cmd>ToReplSelection<CR>")
+      vim.keymap.set("n", "<leader><CR>", "<Cmd>ToReplBuffer<CR>")
+      vim.keymap.set("v", "<leader><CR>", "<Cmd>ToReplSelection<CR>")
     end
   },
 }

@@ -23,11 +23,12 @@ function m.colorbar()
   local cols = m.config.mapping[vim.bo.filetype] or m.config.default
   if cols == nil then return end
   local warning_cols = cols + 1
-  local cmd = "\\%" .. warning_cols .. "v"
-  vim.fn.matchadd("ColorColumn", cmd, -1)
+  local cmd = "\\%" .. warning_cols .. "v."
+  vim.cmd("highlight LineLimit gui=standout")
+  vim.fn.matchadd("LineLimit", cmd, -1)
 end
 
---- Sets up colorbars across neovim.
+--- Sets up colorbars across Neovim.
 ---
 ---@param config Config
 ---@return nil
