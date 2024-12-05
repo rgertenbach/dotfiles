@@ -4,8 +4,8 @@ vim.keymap.set("n", "<leader>e", "<cmd>Telescope file_browser<CR>")
 vim.keymap.set("i", "<C-@>", "<C-Space>")
 
 -- Move selected text around with <C-j> and <C-k>.
-vim.keymap.set("v", "<C-j>", "<cmd>m '>+1<CR>gv=gv")
-vim.keymap.set("v", "<C-k>", "<cmd>m '>-2<CR>gv=gv")
+vim.keymap.set("v", "<leader>-j", "<cmd>m '>+1<CR>gv=gv")
+vim.keymap.set("v", "<leader>-k", "<cmd>m '>-2<CR>gv=gv")
 
 -- Don't overwrite paste buffer with text that was pasted over.
 vim.keymap.set("x", "<leader>p", "\"_dp")

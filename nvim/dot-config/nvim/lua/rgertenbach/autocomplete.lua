@@ -4,10 +4,10 @@ local cmp = require("cmp")
 local luasnip = require("luasnip")
 local lspkind = require('lspkind')
 
-vim.keymap.set({ "i", "s" }, "<C-l>", function()
+vim.keymap.set({ "i", "s" }, "<C-k>", function()
   if luasnip.choice_active() then luasnip.change_choice(1) end
 end)
-vim.keymap.set({ "i", "s" }, "<C-h>", function()
+vim.keymap.set({ "i", "s" }, "<C-j>", function()
   if luasnip.choice_active() then luasnip.change_choice(-1) end
 end)
 vim.keymap.set({ "i", "s" }, "<C-y>", function()
