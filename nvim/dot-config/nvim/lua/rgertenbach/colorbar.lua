@@ -3,15 +3,14 @@
 
 local m = {}
 
--- Keep config between reloads
-
 ---@class Config A configuration of line limits.
 ---@field default integer Default character limit after which to highlight.
 ---@field mapping table<string, integer> | nil A mapping from filetype to limit.
+---@field exclude table<string> | nil
 
 _ColorbarConfigurationValues = _ColorbarConfigurationValues or {
   default = 80,
-  mapping = {}
+  mapping = {},
 }
 
 m.config = _ColorbarConfigurationValues

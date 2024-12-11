@@ -65,8 +65,9 @@ return {
       torepl.setup({
         commands = {
           python = {
-            cmd = "~/py/venv/bin/ipython -c \"%s\" -i",
+            cmd = "~/py/venv/bin/ipython \"%s\" -i",
             delimiter = "# PRE",
+            pass_as = torepl.PassMethod.file
           },
           csv = {
             cmd = "~/py/venv/bin/python ~/py/csv_loader.py \"%s\"",
@@ -84,4 +85,5 @@ return {
       vim.keymap.set("v", "<leader><CR>", "<Cmd>ToReplSelection<CR>")
     end
   },
+  { "echasnovski/mini.statusline", version = false, config = function() require("mini.statusline").setup({}) end},
 }

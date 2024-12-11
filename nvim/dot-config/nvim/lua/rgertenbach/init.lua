@@ -1,29 +1,27 @@
-local m = {}
+require("rgertenbach.autocomplete")
+vim.opt.timeout = false  -- Key combos don't expire, y <1 min> y yanks a line.
+vim.opt.number = true  -- Show line numbers.
+vim.opt.relativenumber = true  -- Show relative line numbers.
+vim.opt.visualbell = true  -- No beep.
+vim.opt.termguicolors = true -- 24-bit colors.
+vim.opt.signcolumn = "yes"  -- Reserve space for diagnostic icons.
+vim.opt.showmatch = true  -- Highlight matching brace.
+vim.opt.splitright = true  -- Open vertical splits to the right.
+vim.opt.splitbelow = true  -- Open horizontal splits below.
+vim.opt.scrolloff = 8 -- Look at least 8 lines ahead.
 
-m.autocomplete = require("rgertenbach.autocomplete")
-m.remaps = require("rgertenbach.remaps")
-m.opts = require("rgertenbach.opts")
+-- Indentation
+vim.opt.expandtab = true  -- Spaces instead of tabs.
+vim.opt.smartindent = true  -- Enable smart auto-indent.
+vim.opt.shiftwidth = 2 -- # of auto indent spaces.
+vim.opt.softtabstop = 2  -- Tab inserts two spaces.
 
--- Doesn't support all internal features, especially pipes
--- Maybe I can update it
--- sudo apt install tree-sitter-cli
--- To install: clone takegue/tree-sitter-sql-bigquery
--- tree-sitter generate
--- copy the queries/highlights.scm to ~/.local/share/nvim/lazy/nvim-treesitter/queries/sql_bigquery/
--- local parser_config = require "nvim-treesitter.parsers".get_parser_configs()
--- parser_config.sql_bigquery = {
---   install_info = {
---     url = "~/src/tree-sitter-sql-bigquery", -- local path or git repo
---     files = {"src/parser.c", "src/scanner.c"}, -- note that some parsers also require src/scanner.c or src/scanner.cc
---     -- optional entries:
---     generate_requires_npm = true, -- if stand-alone parser without npm dependencies
---     requires_generate_from_grammar = false, -- if folder contains pre-generated src/parser.c
---   },
---   filetype = "googlesql" -- if filetype does not match the parser name
--- }
--- vim.treesitter.language.register('sql_bigquery', 'googlesql')
--- vim.treesitter.language.register('sql_bigquery', 'sql')
+-- Python
+vim.g.python_recommended_style = 0  -- Disable automatic pep8-ing.
+vim.g.python3_host_prog = '~/py/venv/bin/python3'
 
+
+require('rgertenbach.colorbar').setup({default = 80})
 
 local function camel_to_snake()
   local word = vim.call('expand','<cword>')
@@ -49,6 +47,16 @@ end
 vim.api.nvim_create_user_command("CamelToSnake", camel_to_snake, {})
 vim.api.nvim_create_user_command("SnakeToCamel", snake_to_camel, {})
 vim.api.nvim_create_user_command("ToggleSnakeCamel", toggle_snake_camel, {})
-vim.api.nvim_set_keymap("n", "<C-j>", "", { noremap = true, callback = toggle_snake_camel})
+vim.keymap.set("n", "<C-j>", toggle_snake_camel)
+vim.keymap.set("i", "<C-@>", "<C-Space>")  -- Prevent <C-Space> being <C-@>.
 
-return m
+vim.keymap.set("x", "<leader>p", "\"_dp")  -- Pastem keeping egister intact.
+vim.keymap.set({ "n", "v" }, "<leader>y", "\"+y")  -- Yank to system clipboard.
+vim.keymap.set("n", "<Esc>", "<cmd>nohl<CR>")  -- Remove search highlights
+
+-- Make buffer's directory pwd.
+vim.keymap.set("n", "<leader>pfd", ":cd %:h<CR>:pwd<CR>")
+
+-- Center after moving half pages.
+vim.keymap.set('n', '<C-u>', '<C-u>zz')
+vim.keymap.set('n', '<C-d>', '<C-d>zz')
