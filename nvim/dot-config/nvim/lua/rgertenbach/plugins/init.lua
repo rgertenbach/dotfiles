@@ -85,5 +85,26 @@ return {
       vim.keymap.set("v", "<leader><CR>", "<Cmd>ToReplSelection<CR>")
     end
   },
-  { "echasnovski/mini.statusline", version = false, config = function() require("mini.statusline").setup({}) end},
+  {
+    "echasnovski/mini.statusline",
+    version = false,
+    config = function() require("mini.statusline").setup({}) end
+  },
+  -- Move selection with <M-[hjkl]>
+  {
+    "echasnovski/mini.move",
+    version = false,
+    config = function() require("mini.move").setup({}) end
+  },
+  {
+    "echasnovski/mini.files",
+    version = false,
+    config = function()
+      local files = require("mini.files")
+      files.setup({
+        options = {use_as_default_explorer = false}
+      })
+      vim.keymap.set("n", "<leader>-", files.open)
+    end
+  },
 }
