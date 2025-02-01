@@ -1,8 +1,6 @@
 " Enable modern Vim feaad_info.analyzer.AnalyzeAdResponsetures not compatible with Vi spec.
 set nocompatible
 
-"source google.vim
-
 syntax on
 
 " General
