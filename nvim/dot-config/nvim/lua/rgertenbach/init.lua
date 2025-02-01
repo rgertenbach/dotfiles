@@ -11,15 +11,14 @@ vim.opt.splitbelow = true  -- Open horizontal splits below.
 vim.opt.scrolloff = 8 -- Look at least 8 lines ahead.
 
 -- Indentation
-vim.opt.expandtab = true  -- Spaces instead of tabs.
+vim.opt.expandtab = true  -- Spaces instead of tabs, insert tab with <C-v><Tab>.
 vim.opt.smartindent = true  -- Enable smart auto-indent.
-vim.opt.shiftwidth = 2 -- # of auto indent spaces.
-vim.opt.softtabstop = 2  -- Tab inserts two spaces.
+vim.opt.shiftwidth = 4 -- # of auto indent spaces for autoindent (>> etc.)
+vim.opt.softtabstop = 4  -- Tab inserts spaces to align to a multiple of 4.
+
 
 -- Python
-vim.g.python_recommended_style = 0  -- Disable automatic pep8-ing.
 vim.g.python3_host_prog = '~/py/venv/bin/python3'
-
 
 require('rgertenbach.colorbar').setup({default = 80})
 
