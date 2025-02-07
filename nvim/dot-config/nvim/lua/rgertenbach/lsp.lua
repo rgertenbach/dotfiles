@@ -24,7 +24,7 @@ vim.api.nvim_create_augroup("LspDocumentHighlight", { clear = true })
 
 ---Generic on_attach all buffers should run.
 ---
----@param client lsp.Client
+---@param client vim.lsp.Client
 ---@param bufnr number
 M.on_attach = function(client, bufnr)
   local via_telescope = require("telescope.builtin")
