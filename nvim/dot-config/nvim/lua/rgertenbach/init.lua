@@ -77,9 +77,9 @@ vim.api.nvim_create_autocmd(
   {
     group = "Formatter",
     callback = function()
-      local cmd = "<cmd>Format<CR>"
+      local cmd = "<cmd>Format<CR>"   ---@type function|string
       if #vim.lsp.get_clients({ bufnr = 0, method = "textDocument/formatting" }) > 0 then
-        vim.keymap.set("n", "<leader>==", vim.lsp.buf.format, { buffer = 0 })
+        cmd = vim.lsp.buf.format
       end
 
       vim.keymap.set("n", "<leader>==", cmd, { buffer = 0 })
