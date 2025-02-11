@@ -19,6 +19,7 @@ return {
     dependencies = {
       "hrsh7th/cmp-buffer",  -- Find text in buffer.
       "hrsh7th/cmp-nvim-lsp",  -- LSP.
+      "hrsh7th/cmp-nvim-lsp-signature-help",  -- Signature info while typing.
       "hrsh7th/cmp-nvim-lua",
       "hrsh7th/cmp-path",  -- To find files in pwd.
       -- Integrates snippets.
