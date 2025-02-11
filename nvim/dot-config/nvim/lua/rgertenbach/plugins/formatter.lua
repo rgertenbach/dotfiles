@@ -11,18 +11,6 @@ local function config()
     }
   }
   formatter.setup(formatters)
-  vim.api.nvim_create_augroup("Formatter", {})
-  vim.api.nvim_create_autocmd(
-    { "BufEnter", "BufNew" },
-    {
-      group = "Formatter",
-      callback = function()
-        if formatters.filetype[vim.bo.filetype] ~= nil then
-          vim.keymap.set("n", "<leader>==", "<cmd>Format<CR>", { buffer = 0 })
-        end
-      end
-    }
-  )
 end
 
 

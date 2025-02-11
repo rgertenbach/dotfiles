@@ -69,3 +69,20 @@ vim.keymap.set("n", "<leader>pfd", ":cd %:h<CR>:pwd<CR>")
 -- Center after moving half pages.
 vim.keymap.set('n', '<C-u>', '<C-u>zz')
 vim.keymap.set('n', '<C-d>', '<C-d>zz')
+
+-- Autoformat with LSP where available, otherwise use formatter.nvim
+vim.api.nvim_create_augroup("Formatter", {})
+vim.api.nvim_create_autocmd(
+{ "BufEnter", "BufNew" },
+{
+  group = "Formatter",
+  callback = function()
+    local cmd =  "<cmd>Format<CR>"
+    if #vim.lsp.get_clients({bufnr = 0, method = "textDocument/formatting"}) > 0 then
+      cmd = vim.lsp.buf.format()
+    end
+
+    vim.keymap.set("n", "<leader>==", cmd, { buffer = 0 })
+  end
+}
+)
