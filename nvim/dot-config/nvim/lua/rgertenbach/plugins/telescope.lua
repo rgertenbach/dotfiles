@@ -1,4 +1,4 @@
-return {
+return {!i
   {
     "nvim-telescope/telescope.nvim",
     tag = "0.1.5",
@@ -10,6 +10,11 @@ return {
         cond = function() return vim.fn.executable 'make' == 1 end,
       },
       { "nvim-tree/nvim-web-devicons" },
+      {
+        'nvim-telescope/telescope-fzf-native.nvim',
+        build = 'make',
+        cond = function() return vim.fn.executable 'make' == 1 end,
+      },
     },
     config = function()
       local telescope = require("telescope")
@@ -36,6 +41,7 @@ return {
     },
     config = function()
       local fb = require("telescope").load_extension("file_browser")
+      pcall(require('telescope').load_extension, 'fzf')
       vim.keymap.set("n", "<leader>e", fb.file_browser)
     end,
   },
