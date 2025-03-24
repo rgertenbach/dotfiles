@@ -36,20 +36,7 @@ M.on_attach = function(client, bufnr)
   -- Diagnostics
   -- <C-w>d opens diagnostics in a window
   nmap("<leader>xx", "<Cmd>Trouble diagnostics toggle<CR>", "Toggle Trouble window")
-
-  -- See `:help K` for why this keymap
-  nmap('K', vim.lsp.buf.hover, 'Hover Documentation')
-  nmap('<C-k>', vim.lsp.buf.signature_help, 'Signature Documentation')
-
-  nmap('<leader>rn', vim.lsp.buf.rename, '[R]e[n]ame')
-  nmap('<leader>ca', vim.lsp.buf.code_action, '[C]ode [A]ction')
-
-  nmap('gd', via_telescope.lsp_definitions, '[G]oto [D]efinition')
-  nmap('gr', via_telescope.lsp_references, '[G]oto [R]eferences')
-  nmap('gi', via_telescope.lsp_implementations, '[G]oto [I]mplementation')
-  nmap('gt', via_telescope.lsp_type_definitions, '[G]oto [T]ype Definition')
-  nmap('<leader>ds', via_telescope.lsp_document_symbols, '[D]ocument [S]ymbols')
-  nmap('<leader>ws', via_telescope.lsp_dynamic_workspace_symbols, '[W]orkspace [S]ymbols')
+  nmap('grt', vim.lsp.buf.type_definition, '[G]oto [T]ype Definition')
 
   -- Add `:LspFormat` local to the LSP buffer
   if client.server_capabilities.documentFormattingProvider then
