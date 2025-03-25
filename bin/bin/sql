@@ -1,0 +1,17 @@
+#!/bin/bash
+
+if [[ ! -a /tmp/sql ]]; then
+  mkdir /tmp/sql
+fi
+
+filename=$(mktemp  --suffix='.sql' --tmpdir='/tmp/sql')
+
+cat  <<EOF > "${filename}"
+SET QueryRequest.accounting_group = 'smb-marketing-analytics-incentives';
+SET dg_annotations = 'process { product_association { default_product_id: 122715837 } }';
+
+---
+
+EOF
+
+"${EDITOR}" "${filename}" -c '$'

@@ -43,16 +43,6 @@ local function toggle_snake_camel()
   end
 end
 
-vim.api.nvim_create_autocmd(
-  "TermOpen",
-  {
-    callback = function()
-      vim.o.number = false
-      vim.o.relativenumber = false
-    end
-  }
-)
-
 vim.api.nvim_create_user_command("CamelToSnake", camel_to_snake, {})
 vim.api.nvim_create_user_command("SnakeToCamel", snake_to_camel, {})
 vim.api.nvim_create_user_command("ToggleSnakeCamel", toggle_snake_camel, {})

@@ -1,0 +1,4 @@
+#!/bin/sh
+mpm fetch -a \
+  marketing/smb_marketing_analytics/colab/python_runtime --version_key='live' \
+  ~/mpms/tfcolab

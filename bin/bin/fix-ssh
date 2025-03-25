@@ -1,0 +1,6 @@
+#!/bin/sh
+ssh_folder=`ls /tmp/ | grep ssh-`
+ssh_path="/tmp/${ssh_folder}"
+agent=`ls "${ssh_path}" | grep agent`
+agent_path=${ssh_path}/${agent}
+export SSH_AUTH_SOCK="${agent_path}"

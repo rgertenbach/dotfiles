@@ -1,0 +1,47 @@
+#!/bin/bash
+
+# Helper script for tmux to identify the current citc workspace (if applicable).
+#
+# Used to rename windows based on the currently active pane's path.
+# CLOUDTOP ONLY
+#
+# @param $1 The working directory, uses PWD if empty.
+# @returns A shorthand for the current citc workspace or the name of the
+#   currenty active shell
+
+citc_base='/google/src'
+
+current_dir=$1
+[[ -z "${current_dir}" ]] && current_dir="${PWD}"
+
+if [[ "${current_dir}" != "${citc_base}"* ]]; then
+  echo $(basename "${SHELL}")
+  exit
+fi
+
+# Own Client
+if [[ "${current_dir}" == "${citc_base}/cloud/${USER}"* ]]; then
+  userdir="${citc_base}/cloud/${USER}/"
+  workspace_dir="${current_dir/${userdir}/}"
+  workspace_name="${workspace_dir/\/*/}"
+  echo "CitC(${workspace_name})"
+  exit
+fi
+
+# Other's client
+if [[ "${current_dir}" == "${citc_base}/cloud/"* ]]; then
+  clouddir="${current_dir/${citc_base}\/cloud\//}"
+  user_name="${clouddir/\/*/}"
+  userdir="${clouddir}/${username}"
+  workspace_dir="${current_dir/${userdir}}"
+  workspace_name="${userdir/${user_name}\//}"
+  echo "CitC(${workspace_name/\/*/}|${user_name})"
+  exit
+fi
+
+# HEAD
+if [[ "${current_dir}" == "${citc_base}/head/depot"* ]]; then
+  echo 'CitC(HEAD)'
+  exit
+fi
+

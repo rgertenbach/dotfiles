@@ -59,7 +59,9 @@ return {
   },
 
   {
-    "rgertenbach/ToRepl.nvim",
+    -- "rgertenbach/ToRepl.nvim",
+    name = "ToRepl.nvim",
+    dir = "~/src/torepl.nvim",
     config = function()
       local torepl = require("torepl")
       torepl.setup({
@@ -78,6 +80,12 @@ return {
             pass_as = torepl.PassMethod.file,
             after = "os.remove(arg[0])",
             delimiter = "-- PRE",
+          },
+          -- Debug
+          text = {
+            cmd = "~/py/venv/bin/python ~/print_code.py \"%s\"",
+            delimiter = "# Delim",
+            pass_as = torepl.PassMethod.file,
           },
         }
       })
