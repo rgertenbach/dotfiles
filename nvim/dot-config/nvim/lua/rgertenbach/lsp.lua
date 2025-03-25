@@ -36,6 +36,7 @@ M.on_attach = function(client, bufnr)
   -- Diagnostics
   -- <C-w>d opens diagnostics in a window
   nmap("<leader>xx", "<Cmd>Trouble diagnostics toggle<CR>", "Toggle Trouble window")
+  nmap('gd', vim.lsp.buf.definition, '[G]oto [D]efinition')
   nmap('grt', vim.lsp.buf.type_definition, '[G]oto [T]ype Definition')
 
   -- Add `:LspFormat` local to the LSP buffer
