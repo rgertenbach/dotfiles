@@ -2,13 +2,13 @@ require("rgertenbach.autocomplete")
 vim.opt.timeout = false       -- Key combos don't expire, y <1 min> y yanks a line.
 vim.opt.number = true         -- Show line numbers.
 vim.opt.relativenumber = true -- Show relative line numbers.
-vim.opt.visualbell = true     -- No beep.
 vim.opt.termguicolors = true  -- 24-bit colors.
 vim.opt.signcolumn = "yes"    -- Reserve space for diagnostic icons.
 vim.opt.showmatch = true      -- Highlight matching brace.
 vim.opt.splitright = true     -- Open vertical splits to the right.
 vim.opt.splitbelow = true     -- Open horizontal splits below.
 vim.opt.scrolloff = 8         -- Look at least 8 lines ahead.
+vim.opt.cursorline = true
 
 -- Indentation
 vim.opt.expandtab = true   -- Spaces instead of tabs, insert tab with <C-v><Tab>.
