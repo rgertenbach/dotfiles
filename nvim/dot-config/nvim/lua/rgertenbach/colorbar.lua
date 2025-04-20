@@ -11,7 +11,7 @@ local m = {}
 _ColorbarConfigurationValues = _ColorbarConfigurationValues or {
   default = 80,
   mapping = {},
-  exclude_ft = { "", "help"},
+  exclude_ft = { "", "help" },
   exclude_bt = { "terminal" }
 }
 

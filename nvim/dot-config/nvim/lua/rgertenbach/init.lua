@@ -20,7 +20,9 @@ vim.opt.softtabstop = 4    -- Tab inserts spaces to align to a multiple of 4.
 -- Python
 vim.g.python3_host_prog = '~/py/venv/bin/python3'
 
-require('rgertenbach.colorbar').setup({ default = 80 })
+local colorbar = require('rgertenbach.colorbar')
+colorbar.setup({ default = 80})
+table.insert(colorbar.config.exclude_ft, "trouble")
 
 local function camel_to_snake()
   local word = vim.call('expand', '<cword>')
