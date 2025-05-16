@@ -20,6 +20,12 @@ vim.opt.softtabstop = 4    -- Tab inserts spaces to align to a multiple of 4.
 -- Python
 vim.g.python3_host_prog = '~/py/venv/bin/python3'
 
+-- Persistent undo history but in /tmp/. This keeps data beteen relaunches.
+local undodir = "/tmp/vimundo/"
+vim.fn.mkdir(undodir, "-p")
+vim.opt.undodir = undodir
+vim.opt.undofile = true
+
 local colorbar = require('rgertenbach.colorbar')
 colorbar.setup({ default = 80})
 table.insert(colorbar.config.exclude_ft, "trouble")
