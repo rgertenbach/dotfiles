@@ -17,7 +17,7 @@ M.servers = {
         globals = { 'vim' }
       },
     },
-  },
+  }
 }
 
 vim.api.nvim_create_augroup("LspDocumentHighlight", { clear = true })
