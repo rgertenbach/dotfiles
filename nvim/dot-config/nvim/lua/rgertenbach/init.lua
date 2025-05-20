@@ -1,5 +1,5 @@
 require("rgertenbach.autocomplete")
-require("rgertenbach.lsp")
+local rg_lsp = require("rgertenbach.lsp")
 vim.opt.timeout = false       -- Key combos don't expire, y <1 min> y yanks a line.
 vim.opt.number = true         -- Show line numbers.
 vim.opt.relativenumber = true -- Show relative line numbers.
@@ -28,7 +28,7 @@ vim.opt.undodir = undodir
 vim.opt.undofile = true
 
 local colorbar = require('rgertenbach.colorbar')
-colorbar.setup({ default = 80})
+colorbar.setup({ default = 80 })
 table.insert(colorbar.config.exclude_ft, "trouble")
 
 local function camel_to_snake()
@@ -86,7 +86,7 @@ vim.api.nvim_create_autocmd(
   {
     group = "Formatter",
     callback = function()
-      local cmd = "<cmd>Format<CR>"   ---@type function|string
+      local cmd = "<cmd>Format<CR>" ---@type function|string
       if #vim.lsp.get_clients({ bufnr = 0, method = "textDocument/formatting" }) > 0 then
         cmd = vim.lsp.buf.format
       end
@@ -96,3 +96,6 @@ vim.api.nvim_create_autocmd(
   }
 )
 
+vim.lsp.config("hls", { filetypes = { "haskell", "lhaskell", "cabal" } })
+vim.lsp.config("*", { on_attach = rg_lsp.on_attach })
+vim.lsp.enable({ "lua_ls", "bashls", "clangd", "pyright", "hls" })
