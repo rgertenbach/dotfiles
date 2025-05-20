@@ -79,7 +79,7 @@ return {
             after = "os.remove(arg[0])",
             delimiter = "-- PRE",
           },
-        }
+        },
       })
       vim.keymap.set("n", "<leader><CR>", "<Cmd>ToReplBuffer<CR>")
       vim.keymap.set("v", "<leader><CR>", "<Cmd>ToReplSelection<CR>")
