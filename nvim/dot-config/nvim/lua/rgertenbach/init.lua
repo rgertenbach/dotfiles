@@ -1,4 +1,5 @@
 require("rgertenbach.autocomplete")
+require("rgertenbach.lsp")
 vim.opt.timeout = false       -- Key combos don't expire, y <1 min> y yanks a line.
 vim.opt.number = true         -- Show line numbers.
 vim.opt.relativenumber = true -- Show relative line numbers.
@@ -94,3 +95,4 @@ vim.api.nvim_create_autocmd(
     end
   }
 )
+
