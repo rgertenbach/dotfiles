@@ -96,6 +96,20 @@ vim.api.nvim_create_autocmd(
   }
 )
 
-vim.lsp.config("hls", { filetypes = { "haskell", "lhaskell", "cabal" } })
+local util = require 'lspconfig.util'
+vim.lsp.config("hls", { 
+  filetypes = { "haskell", "lhaskell", "cabal" },
+  root_dir = function(bufnr, on_dir)
+    local fname = vim.api.nvim_buf_get_name(bufnr)
+    local proj = util.root_pattern('hie.yaml', 'stack.yaml', 'cabal.project', '*.cabal', 'package.yaml')(fname)
+    if proj ~= nil then
+      on_dir(proj)
+    else
+      on_dir(vim.fs.dirname(fname))
+    end
+
+
+  end
+})
 vim.lsp.config("*", { on_attach = rg_lsp.on_attach })
 vim.lsp.enable({ "lua_ls", "bashls", "clangd", "pyright", "hls" })

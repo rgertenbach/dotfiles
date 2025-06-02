@@ -45,16 +45,17 @@ if [[ -d ~/bin && ${PATH} != *"${HOME}/bin"* ]]; then
   export PATH="${PATH}:${HOME}/bin"
 fi
 
-if [ -f ~/.bash_aliases ]; then
+if [[ -f ~/.bash_aliases ]]; then
+  # shellcheck source=dot-bash_aliases
   . ~/.bash_aliases
 fi
 
 export TZ='America/Los_Angeles'
 
-#                ┌ pwd with ~ substitution    
-#                │                        ┌ Host symbol 
-#                ▼                        ▼
-PS1='\e[01;34m\]\w\[\e[00m\] \[\e[01;33m\]Φ\[\e[00m\] '
+#                  ┌ pwd with ~ substitution    
+#                  │                        ┌ Host symbol 
+#                  ▼                        ▼
+PS1='\[\e[01;34m\]\w\[\e[00m\] \[\e[01;33m\]Φ\[\e[00m\] '
 
 # colored GCC warnings and errors
 export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
@@ -63,8 +64,9 @@ export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quo
 export PYTHONPATH="/home/robin/py"
 
 # WSL Settings
-LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/usr/local/cuda/extras/CUPTI/lib64"
-export BROWSER='wslview'  # WSL only!
-# End of WSL Settings
+if [[ $(uname --kernel-release) == "*microsoft-standard-WSL2" ]]; then
+    LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/usr/local/cuda/extras/CUPTI/lib65"
+    export BROWSER='wslview'  # WSL only!
+fi
 
-[ -f "/home/robin/.ghcup/env" ] && . "/home/robin/.ghcup/env" # ghcup-env
+[[ -f "/home/robin/.ghcup/env" ]] && . "/home/robin/.ghcup/env" # ghcup-env
