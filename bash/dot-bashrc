@@ -55,7 +55,7 @@ export TZ='America/Los_Angeles'
 #                  ┌ pwd with ~ substitution    
 #                  │                        ┌ Host symbol 
 #                  ▼                        ▼
-PS1='\[\e[01;34m\]\w\[\e[00m\] \[\e[01;33m\]Φ\[\e[00m\] '
+PS1='\[\e[01;34m\]\w\[\e[00m\] \[\e[01;33m\]λ\[\e[00m\] '
 
 # colored GCC warnings and errors
 export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
@@ -70,3 +70,28 @@ if [[ $(uname --kernel-release) == "*microsoft-standard-WSL2" ]]; then
 fi
 
 [[ -f "/home/robin/.ghcup/env" ]] && . "/home/robin/.ghcup/env" # ghcup-env
+
+# Go up multiple directories
+#
+# $1: Either the number of directories to go up or (parth of) the name  of the
+#     parent directory to go to.
+up() {
+  local n=${1:-1}
+  path=''
+
+  if [[ "${n}" =~ ^[0-9]+$ ]]; then
+    for (( i=0; i<n; i++ )); do
+      path+="../"
+    done
+    cd "${path}" || return 1
+    return 0
+  fi
+
+  if [[ $PWD =~ $n ]]; then
+    while ! [[ $(basename "$PWD") =~ $n ]]; do
+      cd ..
+    done
+  else
+    return 1
+  fi
+}
