@@ -96,6 +96,15 @@ vim.api.nvim_create_autocmd(
   }
 )
 
-vim.lsp.config("hls", { filetypes = { "haskell", "lhaskell", "cabal" } })
 vim.lsp.config("*", { on_attach = rg_lsp.on_attach })
+vim.lsp.config("hls", {
+  filetypes = { "haskell", "lhaskell", "cabal" },
+  on_attach = function(client, bufnr)
+    rg_lsp.on_attach(client, bufnr)
+    -- Cabal files don't support documentHighlight right now.
+    if vim.bo.filetype == "cabal" then
+      vim.api.nvim_clear_autocmds({ buffer = bufnr, group = "LspDocumentHighlight" })
+    end
+  end
+})
 vim.lsp.enable({ "lua_ls", "bashls", "clangd", "pyright", "hls" })
