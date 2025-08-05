@@ -70,7 +70,7 @@ return {
             pass_as = torepl.PassMethod.file
           },
           csv = {
-            cmd = "~/py/venv/bin/python ~/py/csv_loader.py \"%s\"",
+            cmd = "~/py/venv/bin/ipython ~/py/csv_loader.py \"%s\"",
             pass_as = torepl.PassMethod.file,
           },
           lua = {
