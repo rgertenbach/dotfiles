@@ -9,7 +9,8 @@ vim.opt.showmatch = true      -- Highlight matching brace.
 vim.opt.splitright = true     -- Open vertical splits to the right.
 vim.opt.splitbelow = true     -- Open horizontal splits below.
 vim.opt.scrolloff = 8         -- Look at least 8 lines ahead.
-vim.opt.cursorline = true
+vim.opt.cursorline = true     -- Highlight current line.
+vim.opt.winborder = "rounded" -- Hover windows have borders.
 
 -- Indentation
 vim.opt.expandtab = true   -- Spaces instead of tabs, insert tab with <C-v><Tab>.
