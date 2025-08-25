@@ -1,0 +1,97 @@
+# If not running interactively, don't do anything
+# This also won't import aliases for portability.
+case $- in
+    *i*) ;;
+      *) return;;
+esac
+
+
+# check the window size after each command and, if necessary,
+# update the values of LINES and COLUMNS.
+shopt -s checkwinsize
+
+# If set, the pattern "**" used in a pathname expansion context will
+# match all files and zero or more directories and subdirectories.
+shopt -s globstar
+
+# make less more friendly for non-text input files, see lesspipe(1)
+[[ -x /usr/bin/lesspipe ]] && eval "$(SHELL=/bin/sh lesspipe)"
+
+# Set Bash to vim mode via ESC
+set -o vi
+
+# disable ctrl+s terminal lock which needs to be unlocked with ctrl+q
+stty -ixon
+
+# enable programmable completion features (you don't need to enable
+# this, if it's already enabled in /etc/bash.bashrc and /etc/profile
+# sources /etc/bash.bashrc).
+if ! shopt -oq posix; then
+  if [ -f /usr/share/bash-completion/bash_completion ]; then
+    . /usr/share/bash-completion/bash_completion
+  elif [ -f /etc/bash_completion ]; then
+    . /etc/bash_completion
+  fi
+fi
+
+# Conditional loading of external configs.
+
+# Add ~/.local/bin to PATH if it exists and isn't already in there.
+if [[ -d ~/.local/bin && ${PATH} != *"${HOME}/.local/bin"* ]]; then
+  export PATH="${PATH}:${HOME}/.local/bin"
+fi
+# Add ~//bin to PATH if it exists and isn't already in there.
+if [[ -d ~/bin && ${PATH} != *"${HOME}/bin"* ]]; then
+  export PATH="${PATH}:${HOME}/bin"
+fi
+
+if [[ -f ~/.bash_aliases ]]; then
+  # shellcheck source=dot-bash_aliases
+  . ~/.bash_aliases
+fi
+
+export TZ='America/Los_Angeles'
+
+#                  ┌ pwd with ~ substitution    
+#                  │                        ┌ Host symbol 
+#                  ▼                        ▼
+PS1='\[\e[01;34m\]\w\[\e[00m\] \[\e[01;33m\]λ\[\e[00m\] '
+
+# colored GCC warnings and errors
+export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
+
+# Add personal libraries to python
+export PYTHONPATH="/home/robin/py"
+
+# WSL Settings
+if [[ $(uname --kernel-release) == "*microsoft-standard-WSL2" ]]; then
+    LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/usr/local/cuda/extras/CUPTI/lib65"
+    export BROWSER='wslview'  # WSL only!
+fi
+
+[[ -f "/home/robin/.ghcup/env" ]] && . "/home/robin/.ghcup/env" # ghcup-env
+
+# Go up multiple directories
+#
+# $1: Either the number of directories to go up or (parth of) the name  of the
+#     parent directory to go to.
+up() {
+  local n=${1:-1}
+  path=''
+
+  if [[ "${n}" =~ ^[0-9]+$ ]]; then
+    for (( i=0; i<n; i++ )); do
+      path+="../"
+    done
+    cd "${path}" || return 1
+    return 0
+  fi
+
+  if [[ $PWD =~ $n ]]; then
+    while ! [[ $(basename "$PWD") =~ $n ]]; do
+      cd ..
+    done
+  else
+    return 1
+  fi
+}
