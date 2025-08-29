@@ -72,6 +72,9 @@ vim.keymap.set("i", "<C-@>", "<C-Space>")         -- Prevent <C-Space> being <C-
 vim.keymap.set("x", "<leader>p", "\"_dp")         -- Pastem keeping egister intact.
 vim.keymap.set({ "n", "v" }, "<leader>y", "\"+y") -- Yank to system clipboard.
 vim.keymap.set("n", "<Esc>", "<cmd>nohl<CR>")     -- Remove search highlights
+-- Replace text under visual selection in buffer.
+vim.keymap.set("v", "<C-s>", "\"zy:%s/z//g<left><left>")
+
 
 -- Make buffer's directory pwd.
 vim.keymap.set("n", "<leader>pfd", ":cd %:h<CR>:pwd<CR>")
