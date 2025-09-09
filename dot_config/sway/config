@@ -12,7 +12,7 @@ include keybinds
 floating_modifier $mod
 
 input type:keyboard {
-  xkb_layout gb
+  xkb_layout us
   xkb_options ctrl:nocaps
 }
 

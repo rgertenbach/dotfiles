@@ -5,7 +5,7 @@ bindsym $mod+Return exec foot
 bindsym $mod+Shift+q kill
 
 # start dmenu (a program launcher)
-bindsym $mod+d exec dmenu_run
+bindsym $mod+d exec wmenu-run
 bindsym $mod+m exec ~/bin/emoji
 
 # change focus
@@ -75,7 +75,7 @@ bindsym XF86Bluetooth exec blueman-manager
 # Lock screen and Background
 bindsym $mod+shift+x exec "~/.config/sway/scripts/swaylock"
 
-bindsym $mod+c exec --no-startup-id google-chrome
+bindsym $mod+c exec --no-startup-id google-chrome-stable
 
 # F7 / Screen button thingy runs autoscreen
 bindsym XF86Display exec --no-startup-id '~/bin/autoscreen'
