@@ -1,0 +1,36 @@
+# i3 config file (v4)
+#
+# Please see https://i3wm.org/docs/userguide.html for a complete reference!
+
+set $mod Mod4
+
+include workspaces
+include looks
+include keybinds
+
+# Use Mouse+$mod to drag floating windows to their wanted position
+floating_modifier $mod
+
+input type:keyboard {
+  xkb_layout gb
+  xkb_options ctrl:nocaps
+}
+
+input "2:10:TPPS/2_Elan_TrackPoint" {
+  accel_profile "adaptive"
+  pointer_accel -0.3
+}
+
+input "1133:49740:Logitech_G400s_Optical_Gaming_Mouse" {
+  accel_profile "flat"
+  pointer_accel +0.7
+}
+
+# Notifications
+exec /usr/bin/dunst
+
+# Get a global SSH Auth sock to be able to SSH to cloudtop
+exec "[[ -z $SSH_AUTH_SOCK ]] && ssh-agent -a $SSH_AUTH_SOCK"
+exec sh -c "ssh-agent -s -a $SSH_AUTH_SOCK"
+
+include /etc/sway/config.d/50-systemd-user.conf

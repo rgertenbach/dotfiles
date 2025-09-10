@@ -1,0 +1,56 @@
+# Font for window titles and bar default.
+font pango:Roboto 9
+
+# Pallette
+set $off-black   #222222
+set $grey        #777777
+set $light-grey  #F3F4F5
+set $red         #FF0000
+set $bordeaux    #E43935
+set $transparent #FF000000
+
+
+# Elements
+set $unused     $red
+set $background $off-black
+set $active     $grey
+set $text       $light-grey
+set $urgent     $bordeaux
+set $hidden     $transparent
+
+# Window Colors
+#                       border  background  text    indicator
+client.focused          $active $active     $unused $active
+client.unfocused        $hidden $hidden     $unused $hidden
+client.focused_inactive $hidden $hidden     $unused $hidden
+client.urgent           $urgent $background $unused $urgent
+
+hide_edge_borders none
+
+bar {
+    position bottom
+    status_command i3blocks
+
+    colors {
+        background $background
+        separator $grey
+        #                  border      background  text
+        focused_workspace  $active     $active     $text
+        inactive_workspace $background $background $text
+        urgent_workspace   $urgent     $urgent     $text
+    }
+    # For Laptop, hide i3blocks unless $mod is pressed.
+    mode hide
+    hidden_state hide
+    modifier $mod
+}
+
+for_window [class="^Google-chrome$"] border none
+
+gaps outer 0
+gaps inner 8
+# for_window [class="^.*"] border pixel 0
+
+# default_border none
+default_border pixel 1
+smart_gaps on
