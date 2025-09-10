@@ -1,0 +1,26 @@
+#!/bin/bash
+
+active_connection() {
+  nmcli "$@" device wifi list | fgrep '*'
+}
+
+deduplicate_spaces() {
+  tr -s ' ' "$@"
+}
+
+connection_strength() {
+  active_connection --fields IN-USE,SSID,SIGNAL | \
+    deduplicate_spaces | \
+    cut -c 3-  # Removes leading *
+}
+
+grey_dash='<span color="#555555">-</span>'
+
+format_output() {
+  [[ -n "${1}" ]] \
+    && echo "${1} $(format_bars ${2})" \
+    || echo "${grey_dash}"
+}
+
+strength="$(connection_strength)" 
+echo "${strength%% }%"

@@ -1,0 +1,18 @@
+#!/bin/bash
+
+temp="$(sensors -u 2>/dev/null | fgrep 'Package id 0' --after-context 1 | tail -n 1 | cut -f 4 -d ' ')"
+declare -i temp="$(echo ${temp} | tr -d .)"
+
+if [[ $temp -gt 90000 ]]; then
+  color='#FF0000'
+elif [[ $temp -gt 80000 ]]; then
+  color='#FF5500'
+elif [[ $temp -gt 70000 ]]; then 
+  color='#FFAA00'
+elif [[ $temp -gt 60000 ]]; then
+  color='#FFFF00'
+else
+  color='#FFFFFF'
+fi
+
+echo "<span color=\"${color}\">${temp::2}°C</span>"

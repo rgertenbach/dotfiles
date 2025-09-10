@@ -39,7 +39,7 @@ bar {
         inactive_workspace $background $background $text
         urgent_workspace   $urgent     $urgent     $text
     }
-    # For Laptop, hide i3blocks unless $mod is pressed.
+    # For Laptop, hide swaybar unless $mod is pressed.
     mode hide
     hidden_state hide
     modifier $mod
