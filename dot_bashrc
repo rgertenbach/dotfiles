@@ -52,10 +52,16 @@ fi
 
 export TZ='America/Los_Angeles'
 
+declare -A icons
+icons['rgertenbach.mtv.corp.google.com']='δ'
+icons['rgertenbach3']='λ'
+icon="${icons["$(uname -n)"]}"
+
 #                  ┌ pwd with ~ substitution    
 #                  │                        ┌ Host symbol 
 #                  ▼                        ▼
-PS1='\[\e[01;34m\]\w\[\e[00m\] \[\e[01;33m\]λ\[\e[00m\] '
+PS1="\[\e[01;34m\]\w\[\e[00m\] \[\e[01;33m\]${icon}\[\e[00m\] "
+unset icons icon
 
 # colored GCC warnings and errors
 export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
