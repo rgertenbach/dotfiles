@@ -12,7 +12,11 @@ include keybinds
 floating_modifier $mod
 
 input type:keyboard {
+  {{ if eq .chezmoi.hostname "rgertenbach3" }}
+  xkb_layout gb
+  {{ else }}
   xkb_layout us
+  {{ end }}
   xkb_options ctrl:nocaps
 }
 
