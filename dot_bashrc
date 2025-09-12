@@ -1,3 +1,5 @@
+# vim: set filetype=bash :
+
 # If not running interactively, don't do anything
 # This also won't import aliases for portability.
 case $- in
@@ -55,6 +57,7 @@ export TZ='America/Los_Angeles'
 declare -A icons
 icons['rgertenbach.mtv.corp.google.com']='δ'
 icons['rgertenbach3']='λ'
+icons['nibor']='α'
 icon="${icons["$(uname -n)"]}"
 
 #                  ┌ pwd with ~ substitution    

@@ -68,7 +68,9 @@ launch=xdg-open ${url}
 # blink=no
 # beam-thickness=1.5
 # underline-thickness=<font underline thickness>
+{{ if not (eq .chezmoi.hostname "nibor") }}
 color = cdcecf aeafb0
+{{ end }}
 
 
 [mouse]
@@ -84,7 +86,9 @@ background = 192330
 foreground = cdcecf
 # flash=7f7f00
 # flash-alpha=0.5
-# cursor = cdcecf aeafb0
+{{ if eq .chezmoi.hostname "nibor" }}
+cursor = cdcecf aeafb0
+{{ end }}
 
 ## Normal/regular colors (color palette 0-7)
 regular0 = 393b44
