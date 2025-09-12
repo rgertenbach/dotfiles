@@ -52,6 +52,11 @@ if [[ -f ~/.bash_aliases ]]; then
   . ~/.bash_aliases
 fi
 
+if [[ -f ~/.bash_functions ]]; then
+  # shellcheck source=dot-bash_aliases
+  . ~/.bash_functions
+fi
+
 export TZ='America/Los_Angeles'
 
 declare -A icons
