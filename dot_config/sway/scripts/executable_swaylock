@@ -1,3 +1,11 @@
 #!/bin/bash
 
-swaylock #--image=~/Pictures/forest-painting.png
+case "$(uname -n)" in
+    'rgertenbach3')
+        swaylock --image=~/Pictures/forest-painting.png
+        ;;
+    *)
+        swaylock
+        ;;
+esac
+
