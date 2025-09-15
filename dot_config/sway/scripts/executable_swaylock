@@ -4,6 +4,9 @@ case "$(uname -n)" in
     'rgertenbach3')
         swaylock --image=~/Pictures/forest-painting.png
         ;;
+    'rgertenbach.mtv.corp.google.com')
+        swaylock --image=~/Pictures/mont-blanc.png
+        ;;
     *)
         swaylock
         ;;
