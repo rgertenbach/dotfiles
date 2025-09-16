@@ -2,7 +2,7 @@
 
 case "$(uname -n)" in
     'rgertenbach3')
-        swaylock --image=~/Pictures/forest-painting.png
+        swaylock --image=~/Pictures/pexels-francesco-ungaro-2915997.png
         ;;
     'rgertenbach.mtv.corp.google.com')
         swaylock -i DP-2:~/Pictures/DP-2.png -i DP-4:~/Pictures/DP-4.png
