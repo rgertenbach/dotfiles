@@ -1,3 +1,5 @@
+# vim: ft=swayconfig
+
 # Font for window titles and bar default.
 font pango:Roboto 9
 
