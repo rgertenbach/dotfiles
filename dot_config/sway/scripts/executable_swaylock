@@ -7,8 +7,10 @@ case "$(uname -n)" in
     'rgertenbach.mtv.corp.google.com')
         swaylock --image=~/Pictures/mont-blanc.png
         ;;
+    'nibor')
+        swaylock -i DP-2:~/Pictures/wallpapers/DP-2.png -i DP-1:~/Pictures/wallpapers/DP-1.png
+        ;;
     *)
         swaylock
         ;;
 esac
-
