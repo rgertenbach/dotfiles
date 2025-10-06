@@ -22,6 +22,9 @@ vim.opt.softtabstop = 4    -- Tab inserts spaces to align to a multiple of 4.
 -- Python
 vim.g.python3_host_prog = '~/py/venv/bin/python3'
 
+-- C
+vim.g.c_syntax_for_h = 1
+
 -- Persistent undo history but in /tmp/. This keeps data beteen relaunches.
 local undodir = "/tmp/vimundo/"
 vim.fn.mkdir(undodir, "-p")
@@ -82,6 +85,7 @@ vim.keymap.set("n", "<leader>pfd", ":cd %:h<CR>:pwd<CR>")
 -- Center after moving half pages.
 vim.keymap.set('n', '<C-u>', '<C-u>zz')
 vim.keymap.set('n', '<C-d>', '<C-d>zz')
+
 
 -- Autoformat with LSP where available, otherwise use formatter.nvim
 vim.api.nvim_create_augroup("Formatter", {})
