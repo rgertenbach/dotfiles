@@ -9,6 +9,7 @@ import re
 from subprocess import check_output
 
 status = check_output(['acpi'], universal_newlines=True)
+print("status")
 
 if not status:
     # stands for no battery found
@@ -23,6 +24,7 @@ else:
     commasplitstatus_batteries=[]
     percentleft_batteries=[]
     time = ""
+    timeleft = ""
     for battery in batteries:
         if battery!='':
             state_batteries.append(battery.split(": ")[1].split(", ")[0])

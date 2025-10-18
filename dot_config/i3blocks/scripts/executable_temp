@@ -1,6 +1,6 @@
 #!/bin/bash
 
-temp="$(sensors -u 2>/dev/null | fgrep 'Package id 0' --after-context 1 | tail -n 1 | cut -f 4 -d ' ')"
+temp="$(sensors -u 2>/dev/null | grep -F 'Package id 0' --after-context 1 | tail -n 1 | cut -f 4 -d ' ')"
 declare -i temp="$(echo ${temp} | tr -d .)"
 
 if [[ $temp -gt 90000 ]]; then
