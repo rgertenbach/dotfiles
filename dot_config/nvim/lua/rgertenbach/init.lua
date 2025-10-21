@@ -56,28 +56,24 @@ local function toggle_snake_camel()
   end
 end
 
-vim.api.nvim_create_autocmd(
-  "TermOpen",
-  {
-    callback = function()
-      vim.o.number = false
-      vim.o.relativenumber = false
-    end
-  }
-)
-
 vim.api.nvim_create_user_command("CamelToSnake", camel_to_snake, {})
 vim.api.nvim_create_user_command("SnakeToCamel", snake_to_camel, {})
 vim.api.nvim_create_user_command("ToggleSnakeCamel", toggle_snake_camel, {})
 vim.keymap.set("n", "<C-j>", toggle_snake_camel)
 vim.keymap.set("i", "<C-@>", "<C-Space>")         -- Prevent <C-Space> being <C-@>.
 
-vim.keymap.set("x", "<leader>p", "\"_dp")         -- Pastem keeping egister intact.
+vim.keymap.set("x", "<leader>p", "\"_dp")         -- Paste keeping register intact.
 vim.keymap.set({ "n", "v" }, "<leader>y", "\"+y") -- Yank to system clipboard.
 vim.keymap.set("n", "<Esc>", "<cmd>nohl<CR>")     -- Remove search highlights
 -- Replace text under visual selection in buffer.
 vim.keymap.set("v", "<C-s>", "\"zy:%s/z//g<left><left>")
 
+vim.cmd.highlight("DevKeywordsInfo", "ctermbg=DarkBlue guibg=DarkBlue")
+vim.cmd.highlight("DevKeywordsWarn", "ctermbg=DarkMagenta guibg=DarkMagenta")
+_DevKeywordMatchers = {
+  todo = vim.fn.matchadd("DevKeywordsInfo", ".*TODO:.*"),
+  dns = vim.fn.matchadd("DevKeywordsWarn", ".*DO NOT SUBMIT.*\\c")
+}
 
 -- Make buffer's directory pwd.
 vim.keymap.set("n", "<leader>pfd", ":cd %:h<CR>:pwd<CR>")
@@ -85,7 +81,6 @@ vim.keymap.set("n", "<leader>pfd", ":cd %:h<CR>:pwd<CR>")
 -- Center after moving half pages.
 vim.keymap.set('n', '<C-u>', '<C-u>zz')
 vim.keymap.set('n', '<C-d>', '<C-d>zz')
-
 
 -- Autoformat with LSP where available, otherwise use formatter.nvim
 vim.api.nvim_create_augroup("Formatter", {})
