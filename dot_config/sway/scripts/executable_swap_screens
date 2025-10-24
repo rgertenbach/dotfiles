@@ -1,0 +1,16 @@
+#!/bin/bash
+
+workspaces=$(swaymsg -t get_workspaces | jq 'map(select(.visible == true))[0:2]')
+workspace1=$(jq '.[0].name' <<< "${workspaces}")
+output1=$(jq '.[0].output' <<< "${workspaces}")
+workspace2=$(jq '.[1].name' <<< "${workspaces}")
+output2=$(jq '.[1].output' <<< "${workspaces}")
+focused=$(jq 'max_by(.focused).name' <<< ${workspaces})
+
+swaymsg -q "
+workspace ${workspace1};
+move workspace to ${output2};
+workspace ${workspace2};
+move workspace to ${output1};
+workspace ${focused};"
+
