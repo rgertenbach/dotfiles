@@ -9,7 +9,6 @@ import re
 from subprocess import check_output
 
 status = check_output(['acpi'], universal_newlines=True)
-print("status")
 
 if not status:
     # stands for no battery found
@@ -98,7 +97,6 @@ else:
     fulltext += form.format(color(percentleft), percentleft)
     fulltext += timeleft
 
-print(fulltext)
 print(fulltext)
 if percentleft < 10:
     exit(33)
