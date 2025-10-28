@@ -1,4 +1,4 @@
--- Set up of LSP via mason-lspconfig.
+-- Set up of LSP.
 
 -- This doesn't include all servers, only overrides lspconig defaults.
 local cmp_nvim_lsp = require('cmp_nvim_lsp')
