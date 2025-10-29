@@ -59,29 +59,32 @@ fi
 
 export TZ='America/Los_Angeles'
 
-declare -A icons
-icons['rgertenbach.mtv.corp.google.com']='δ'
-icons['rgertenbach3']='λ'
-icons['nibor']='α'
-icon="${icons["$(uname -n)"]}"
+PROMPT_COMMAND=__prompt_command
+__prompt_command() {
+  local exit="$?"
+  PS1=''
+  local -A icons
+  local icons['rgertenbach.mtv.corp.google.com']='δ'
+  local icons['rgertenbach3']='λ'
+  local icons['nibor']='α'
+  local icon="${icons["$(uname -n)"]}"
 
-#                  ┌ pwd with ~ substitution    
-#                  │                        ┌ Host symbol 
-#                  ▼                        ▼
-PS1="\[\e[01;34m\]\w\[\e[00m\] \[\e[01;33m\]${icon}\[\e[00m\] "
-unset icons icon
+
+  if [ ${exit} != 0 ]; then
+    PS1+="\[\e[1;31m\]${exit}\[\e[0m\] "
+  fi
+
+  #                  ┌ pwd with ~ substitution
+  #                  │                        ┌ Host symbol
+  #                  ▼                        ▼
+  PS1+="\[\e[01;34m\]\w\[\e[00m\] \[\e[01;33m\]${icon}\[\e[00m\] "
+}
 
 # colored GCC warnings and errors
 export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
 
 # Add personal libraries to python
 export PYTHONPATH="/home/robin/py"
-
-# WSL Settings
-if [[ $(uname --kernel-release) == "*microsoft-standard-WSL2" ]]; then
-    LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/usr/local/cuda/extras/CUPTI/lib65"
-    export BROWSER='wslview'  # WSL only!
-fi
 
 [[ -f "/home/robin/.ghcup/env" ]] && . "/home/robin/.ghcup/env" # ghcup-env
 
