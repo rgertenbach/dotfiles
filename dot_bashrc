@@ -61,7 +61,7 @@ export TZ='America/Los_Angeles'
 
 PROMPT_COMMAND=__prompt_command
 __prompt_command() {
-  local exit="$?"
+  local exit_code="$?"
   PS1=''
   local -A icons
   local icons['rgertenbach.mtv.corp.google.com']='δ'
@@ -70,8 +70,8 @@ __prompt_command() {
   local icon="${icons["$(uname -n)"]}"
 
 
-  if [ ${exit} != 0 ]; then
-    PS1+="\[\e[1;31m\]${exit}\[\e[0m\] "
+  if [ ${exit_code} != 0 ]; then
+    PS1+="\[\e[1;31m\]${exit_code}\[\e[0m\] "
   fi
 
   #                  ┌ pwd with ~ substitution
