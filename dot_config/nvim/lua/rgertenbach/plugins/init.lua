@@ -24,11 +24,6 @@ return {
   -- Syntax tree manager for syntax highlighting
   {
     "nvim-treesitter/nvim-treesitter",
-    dependencies = {
-      "nvim-treesitter/nvim-treesitter-textobjects",
-      -- :TSPlaygroundToggle to browse the AST
-      "nvim-treesitter/playground",
-    },
     build = ':TSUpdate',
     config = function()
       require 'nvim-treesitter.configs'.setup {
@@ -54,7 +49,7 @@ return {
         },
         modules = {},
       }
-      vim.keymap.set("n", "<leader>ast", vim.cmd.TSPlaygroundToggle)
+      vim.keymap.set("n", "<leader>ast", vim.cmd.InspectTree)
     end,
   },
 
