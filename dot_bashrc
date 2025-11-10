@@ -69,9 +69,14 @@ __prompt_command() {
   local icons['nibor']='α'
   local icon="${icons["$(uname -n)"]}"
 
-
+  # Error Code
   if [ ${exit_code} != 0 ]; then
     PS1+="\[\e[1;31m\]${exit_code}\[\e[0m\] "
+  fi
+
+  # Python venv
+  if [[ -n ${VIRTUAL_ENV} ]]; then
+    PS1+=" ($(basename ${VIRTUAL_ENV})) "
   fi
 
   #                  ┌ pwd with ~ substitution
