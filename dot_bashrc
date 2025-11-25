@@ -92,8 +92,6 @@ export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quo
 # Add personal libraries to python
 export PYTHONPATH="/home/robin/py"
 
-[[ -f "/home/robin/.ghcup/env" ]] && . "/home/robin/.ghcup/env" # ghcup-env
-
 # Go up multiple directories
 #
 # $1: Either the number of directories to go up or (parth of) the name  of the
