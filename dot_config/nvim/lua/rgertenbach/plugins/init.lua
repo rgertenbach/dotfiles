@@ -118,7 +118,7 @@ return {
           show_hidden = true,
         },
       })
-      vim.keymap.set("n", "<leader>-", require("oil").open_float)
+      vim.keymap.set("n", "<leader>-", require("oil").open)
       vim.keymap.set("n", "<leader>v-", function()
 				vim.cmd.vsplit()
 				require("oil").open()
