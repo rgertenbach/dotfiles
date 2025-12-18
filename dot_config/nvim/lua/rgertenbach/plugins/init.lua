@@ -91,15 +91,42 @@ return {
     version = false,
     config = function() require("mini.move").setup({}) end
   },
+  -- {
+  --   "echasnovski/mini.files",
+  --   version = false,
+  --   config = function()
+  --     local files = require("mini.files")
+  --     files.setup({
+  --       options = {use_as_default_explorer = false}
+  --     })
+  --     vim.keymap.set("n", "<leader>-", files.open)
+  --   end
+  -- },
   {
-    "echasnovski/mini.files",
-    version = false,
+    "stevearc/oil.nvim",
+    dependencies = { { "nvim-mini/mini.icons", opts = {} } },
+    lazy = false,
     config = function()
-      local files = require("mini.files")
-      files.setup({
-        options = {use_as_default_explorer = false}
+      require("oil").setup({
+        columns = {
+          "icon",
+          "permissions",
+          "size",
+          "mtime",
+        },
+        view_options = {
+          show_hidden = true,
+        },
       })
-      vim.keymap.set("n", "<leader>-", files.open)
+      vim.keymap.set("n", "<leader>-", require("oil").open_float)
+      vim.keymap.set("n", "<leader>v-", function()
+				vim.cmd.vsplit()
+				require("oil").open()
+			end)
+      vim.keymap.set("n", "<leader>s-", function()
+				vim.cmd.split()
+				require("oil").open()
+			end)
     end
-  },
+  }
 }
