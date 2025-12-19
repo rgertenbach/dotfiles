@@ -1,3 +1,5 @@
+# vim: ft=config
+
 [spotify]
 label=
 command=~/.config/i3blocks/scripts/spotify
@@ -22,10 +24,12 @@ label=
 interval=1
 command=~/.config/i3blocks/scripts/ram
 
+{{ if eq .chezmoi.hostname "rgertenbach3" }}
 [battery]
 command=~/.config/i3blocks/scripts/battery
 markup=pango
 interval=30
+{{ end }}
 
 [wifi]
 label=
