@@ -110,4 +110,4 @@ vim.lsp.config("hls", {
     end
   end
 })
-vim.lsp.enable({ "lua_ls", "bashls", "clangd", "pyright", "hls", "ts_ls" })
+vim.lsp.enable({ "lua_ls", "bashls", "clangd", "basedpyright", "hls", "ts_ls" })
