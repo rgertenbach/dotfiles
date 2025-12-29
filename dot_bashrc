@@ -67,6 +67,7 @@ __prompt_command() {
   local icons['rgertenbach.mtv.corp.google.com']='δ'
   local icons['rgertenbach3']='λ'
   local icons['nibor']='α'
+  local icons['corgi']='ξ'
   local icon="${icons["$(uname -n)"]}"
 
   # Error Code
