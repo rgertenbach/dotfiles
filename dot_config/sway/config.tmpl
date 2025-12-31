@@ -32,8 +32,12 @@ input "1133:49740:Logitech_G400s_Optical_Gaming_Mouse" {
 exec /usr/bin/dunst
 
 # Get a global SSH Auth sock to be able to SSH to cloudtop
-exec "[[ -z $SSH_AUTH_SOCK ]] && ssh-agent -a $SSH_AUTH_SOCK"
-exec sh -c "ssh-agent -s -a $SSH_AUTH_SOCK"
+exec "[[ -z $SSH_AUTH_SOCK ]] && ssh-agent
+# I think this needs to go: I call it twice (unnecessary) and if I don't have
+# an address I cannot provide it otherwise I don't want to rerun this.
+# exec "[[ -z $SSH_AUTH_SOCK ]] && ssh-agent -a $SSH_AUTH_SOCK"
+# exec sh -c "ssh-agent -s -a $SSH_AUTH_SOCK"
+
 
 include /etc/sway/config.d/50-systemd-user.conf
 
@@ -47,5 +51,5 @@ output DP-2 bg /home/robin/Pictures/wallpapers/DP-2.png tile '#000000'
 {{ else if eq .chezmoi.hostname "rgertenbach3" }}
 output * bg {{ .chezmoi.homeDir }}/Pictures/pexels-francesco-ungaro-2915997.png fill '#000000'
 {{ else if eq .chezmoi.hostname "corgi" }}
-output DSI-1 bg {{ .chezmoi.homeDir }}/Pictures/DSI-1.png tile '#000000' transform 90
+output DSI-1 bg {{ .chezmoi.homeDir }}/Pictures/wallpapers/DSI-1.png tile '#000000' transform 90
 {{ end }}

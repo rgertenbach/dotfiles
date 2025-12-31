@@ -10,6 +10,9 @@ case "$(uname -n)" in
     'nibor')
         swaylock -i DP-2:~/Pictures/wallpapers/lockscreen/DP-2.png -i DP-1:~/Pictures/wallpapers/lockscreen/DP-1.png
         ;;
+    'corgi')
+        swaylock -i DSI-1:~/Pictures/wallpapers/DSI-1.png 
+        ;;
     *)
         swaylock
         ;;
