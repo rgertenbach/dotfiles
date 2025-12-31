@@ -47,5 +47,5 @@ output DP-2 bg /home/robin/Pictures/wallpapers/DP-2.png tile '#000000'
 {{ else if eq .chezmoi.hostname "rgertenbach3" }}
 output * bg {{ .chezmoi.homeDir }}/Pictures/pexels-francesco-ungaro-2915997.png fill '#000000'
 {{ else if eq .chezmoi.hostname "corgi" }}
-output DSI-1 transform 90
+output DSI-1 bg {{ .chezmoi.homeDir }}/Pictures/DSI-1.png tile '#000000' transform 90
 {{ end }}
