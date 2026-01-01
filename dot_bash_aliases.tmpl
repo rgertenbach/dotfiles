@@ -33,7 +33,6 @@ fi
 
 {{ if eq .chezmoi.hostname "nibor" }}
 launch-sway() {
-    XDG_CURRENT_DESKTOP='sway'
-    sway --unsupported-gpu
+    XDG_CURRENT_DESKTOP='sway' sway --unsupported-gpu
 }
 {{ end }}
