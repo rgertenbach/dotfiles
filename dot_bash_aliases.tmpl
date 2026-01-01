@@ -35,4 +35,8 @@ fi
 launch-sway() {
     XDG_CURRENT_DESKTOP='sway' sway --unsupported-gpu
 }
+{{ else if eq .chezmoi.hostname "corgi" }}
+launch-sway() {
+    XDG_CURRENT_DESKTOP='sway' sway
+}
 {{ end }}
