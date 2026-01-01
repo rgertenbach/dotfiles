@@ -8,7 +8,11 @@
 # title=foot
 # locked-title=no
 
+{{ if eq .chezmoi.hostname "corgi" }}
+font=FiraMono Nerd Font:size=13
+{{ else }}
 font=FiraMono Nerd Font:size=11
+{{ end }}
 # font-bold=Fira Code-Bold:size=10
 # font-italic=<italic variant of regular font>
 # font-bold-italic=<bold+italic variant of regular font>
