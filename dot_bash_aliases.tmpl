@@ -30,3 +30,10 @@ if command -v most &> /dev/null; then
 else
   export pager='less'
 fi
+
+{{ if eq .chezmoi.hostname "nibor" }}
+launch-sway() {
+    XDG_CURRENT_DESKTOP='sway'
+    sway --unsupported-gpu
+}
+{{ end }}
