@@ -32,7 +32,7 @@ input "1133:49740:Logitech_G400s_Optical_Gaming_Mouse" {
 exec /usr/bin/dunst
 
 # Get a global SSH Auth sock to be able to SSH
-exec "[[ -z $SSH_AUTH_SOCK ]] && eval $(ssh-agent) -s"
+exec "[[ -z $SSH_AUTH_SOCK ]] && eval $(ssh-agent -s)
 # I think this needs to go: I call it twice (unnecessary) and if I don't have
 # an address I cannot provide it otherwise I don't want to rerun this.
 # exec "[[ -z $SSH_AUTH_SOCK ]] && ssh-agent -a $SSH_AUTH_SOCK"
