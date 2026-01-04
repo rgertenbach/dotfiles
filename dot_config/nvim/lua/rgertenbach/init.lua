@@ -75,34 +75,6 @@ _DevKeywordMatchers = {
     dns = vim.fn.matchadd("DevKeywordsWarn", ".*DO NOT SUBMIT.*\\c")
 }
 
---- Returns the lines of text aligned by the first occurrence of the regex.
----@param lines string[] The text to align.
----@param by string The pattern to align.
----@return string[]
-local function align_strings(lines, by)
-    local rightmost = 0
-    local regex = vim.regex(by)
-    local position = {}
-    for i, line in ipairs(lines) do
-        local col = regex:match_str(line)
-        if col ~= nil then
-            position[i] = col
-            rightmost = math.max(rightmost, col)
-        end
-    end
-    local fmt = string.format("%%-%ds%%s", rightmost)
-
-    local out = {}
-    for i, line in ipairs(lines) do
-        local col = position[i]
-        if col ~= nil then
-            line = fmt:format(string.sub(line, 0, col), string.sub(line, col + 1))
-        end
-        table.insert(out, line)
-    end
-    return out
-end
-
 --- Aligns lines by the first occurrence of the regex.
 ---@param command vim.api.keyset.create_user_command.command_args
 ---@param out_buf integer
@@ -115,9 +87,20 @@ local function align_buffer(command, _, out_buf)
         first = 1
         vim.fn.line("$")
     end
-    local lines = vim.api.nvim_buf_get_lines(in_buf, first - 1, last, true)
-    local out = align_strings(lines, command.args)
-    vim.api.nvim_buf_set_lines(out_buf, first - 1, last, true, out)
+    local regex = vim.regex(command.args)
+    local rightmost = 0
+    local position = {}
+    for line = first, last do
+        local col = regex:match_line(in_buf, line - 1)
+        if col ~= nil then
+            position[line - 1] = col
+            rightmost = math.max(rightmost, col)
+        end
+    end
+    for line, col in pairs(position) do
+        local spaces = {string.rep(" ", rightmost - col)}
+        vim.api.nvim_buf_set_text(out_buf, line, col - 1, line, col - 1, spaces)
+    end
     return 2
 end
 
