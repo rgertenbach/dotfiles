@@ -78,7 +78,7 @@ _DevKeywordMatchers = {
 --- Aligns lines by the first occurrence of the regex.
 ---@param command vim.api.keyset.create_user_command.command_args
 ---@param out_buf integer
-local function align_buffer(command, _, out_buf)
+local function align_buffer(command, ns, out_buf)
     local in_buf = vim.api.nvim_get_current_buf()
     if out_buf == nil then out_buf = in_buf end
     local first = command.line1
@@ -90,16 +90,22 @@ local function align_buffer(command, _, out_buf)
     local regex = vim.regex(command.args)
     local rightmost = 0
     local position = {}
-    for line = first, last do
-        local col = regex:match_line(in_buf, line - 1)
+    for ln = first, last do
+        local col = regex:match_line(in_buf, ln - 1)
         if col ~= nil then
-            position[line - 1] = col
+            position[ln - 1] = col
             rightmost = math.max(rightmost, col)
         end
     end
-    for line, col in pairs(position) do
-        local spaces = {string.rep(" ", rightmost - col)}
-        vim.api.nvim_buf_set_text(out_buf, line, col - 1, line, col - 1, spaces)
+    for ln, col in pairs(position) do
+        local len = rightmost - col
+        if len > 0 then
+            local spaces = { string.rep(" ", len) }
+            vim.api.nvim_buf_set_text(out_buf, ln, col - 1, ln, col - 1, spaces)
+            if ns then
+                vim.hl.range(out_buf, ns, "Substitute", { ln, col }, { ln, col + len })
+            end
+        end
     end
     return 2
 end
