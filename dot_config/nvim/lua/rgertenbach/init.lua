@@ -36,24 +36,24 @@ colorbar.setup({ default = 80 })
 table.insert(colorbar.config.exclude_ft, "trouble")
 
 local function camel_to_snake()
-  local word = vim.call('expand', '<cword>')
-  local out = word:gsub("(%u)", "_%1"):gsub("(%u)", string.lower):gsub("^_", "")
-  vim.cmd("normal! ciw" .. out)
+    local word = vim.call('expand', '<cword>')
+    local out = word:gsub("(%u)", "_%1"):gsub("(%u)", string.lower):gsub("^_", "")
+    vim.cmd("normal! ciw" .. out)
 end
 
 local function snake_to_camel()
-  local word = vim.call('expand', '<cword>')
-  local out = word:gsub("_(.)", string.upper):gsub("^(.)", string.upper)
-  vim.cmd("normal! ciw" .. out)
+    local word = vim.call('expand', '<cword>')
+    local out = word:gsub("_(.)", string.upper):gsub("^(.)", string.upper)
+    vim.cmd("normal! ciw" .. out)
 end
 
 local function toggle_snake_camel()
-  local word = vim.call('expand', '<cword>')
-  if word:match("_") then
-    snake_to_camel()
-  else
-    camel_to_snake()
-  end
+    local word = vim.call('expand', '<cword>')
+    if word:match("_") then
+        snake_to_camel()
+    else
+        camel_to_snake()
+    end
 end
 
 vim.api.nvim_create_user_command("CamelToSnake", camel_to_snake, {})
@@ -71,9 +71,60 @@ vim.keymap.set("v", "<C-s>", "\"zy:%s/z//g<left><left>")
 vim.cmd.highlight("DevKeywordsInfo", "ctermbg=DarkBlue guibg=DarkBlue")
 vim.cmd.highlight("DevKeywordsWarn", "ctermbg=DarkMagenta guibg=DarkMagenta")
 _DevKeywordMatchers = {
-  todo = vim.fn.matchadd("DevKeywordsInfo", ".*TODO:.*"),
-  dns = vim.fn.matchadd("DevKeywordsWarn", ".*DO NOT SUBMIT.*\\c")
+    todo = vim.fn.matchadd("DevKeywordsInfo", ".*TODO:.*"),
+    dns = vim.fn.matchadd("DevKeywordsWarn", ".*DO NOT SUBMIT.*\\c")
 }
+
+--- Returns the lines of text aligned by the first occurrence of the regex.
+---@param lines string[] The text to align.
+---@param by string The pattern to align.
+---@return string[]
+local function align_strings(lines, by)
+    local rightmost = 0
+    local regex = vim.regex(by)
+    local position = {}
+    for i, line in ipairs(lines) do
+        local col = regex:match_str(line)
+        if col ~= nil then
+            position[i] = col
+            rightmost = math.max(rightmost, col)
+        end
+    end
+    local fmt = string.format("%%-%ds%%s", rightmost)
+
+    local out = {}
+    for i, line in ipairs(lines) do
+        local col = position[i]
+        if col ~= nil then
+            line = fmt:format(string.sub(line, 0, col), string.sub(line, col + 1))
+        end
+        table.insert(out, line)
+    end
+    return out
+end
+
+--- Aligns lines by the first occurrence of the regex.
+---@param command vim.api.keyset.create_user_command.command_args
+---@param out_buf integer
+local function align_buffer(command, _, out_buf)
+    local in_buf = vim.api.nvim_get_current_buf()
+    if out_buf == nil then out_buf = in_buf end
+    local first = command.line1
+    local last = command.line2
+    if first == last then
+        first = 1
+        vim.fn.line("$")
+    end
+    local lines = vim.api.nvim_buf_get_lines(in_buf, first - 1, last, true)
+    local out = align_strings(lines, command.args)
+    vim.api.nvim_buf_set_lines(out_buf, first - 1, last, true, out)
+    return 2
+end
+
+vim.api.nvim_create_user_command(
+    "Align",
+    align_buffer,
+    { nargs = 1, range = "%", preview = align_buffer })
 
 -- Make buffer's directory pwd.
 vim.keymap.set("n", "<leader>pfd", ":cd %:h<CR>:pwd<CR>")
@@ -85,29 +136,29 @@ vim.keymap.set('n', '<C-d>', '<C-d>zz')
 -- Autoformat with LSP where available, otherwise use formatter.nvim
 vim.api.nvim_create_augroup("Formatter", {})
 vim.api.nvim_create_autocmd(
-  { "BufEnter", "BufNew" },
-  {
-    group = "Formatter",
-    callback = function()
-      local cmd = "<cmd>Format<CR>" ---@type function|string
-      if #vim.lsp.get_clients({ bufnr = 0, method = "textDocument/formatting" }) > 0 then
-        cmd = vim.lsp.buf.format
-      end
+    { "BufEnter", "BufNew" },
+    {
+        group = "Formatter",
+        callback = function()
+            local cmd = "<cmd>Format<CR>" ---@type function|string
+            if #vim.lsp.get_clients({ bufnr = 0, method = "textDocument/formatting" }) > 0 then
+                cmd = vim.lsp.buf.format
+            end
 
-      vim.keymap.set("n", "<leader>==", cmd, { buffer = 0 })
-    end
-  }
+            vim.keymap.set("n", "<leader>==", cmd, { buffer = 0 })
+        end
+    }
 )
 
 vim.lsp.config("*", { on_attach = rg_lsp.on_attach })
 vim.lsp.config("hls", {
-  filetypes = { "haskell", "lhaskell", "cabal" },
-  on_attach = function(client, bufnr)
-    rg_lsp.on_attach(client, bufnr)
-    -- Cabal files don't support documentHighlight right now.
-    if vim.bo.filetype == "cabal" then
-      vim.api.nvim_clear_autocmds({ buffer = bufnr, group = "LspDocumentHighlight" })
+    filetypes = { "haskell", "lhaskell", "cabal" },
+    on_attach = function(client, bufnr)
+        rg_lsp.on_attach(client, bufnr)
+        -- Cabal files don't support documentHighlight right now.
+        if vim.bo.filetype == "cabal" then
+            vim.api.nvim_clear_autocmds({ buffer = bufnr, group = "LspDocumentHighlight" })
+        end
     end
-  end
 })
 vim.lsp.enable({ "lua_ls", "bashls", "clangd", "basedpyright", "hls", "ts_ls" })
