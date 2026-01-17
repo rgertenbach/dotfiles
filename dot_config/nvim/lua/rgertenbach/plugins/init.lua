@@ -73,6 +73,11 @@ return {
             after = "os.remove(arg[0])",
             delimiter = "-- PRE",
           },
+          scheme = {
+            cmd = "chicken-csi -s \"%s\"",
+            pass_as = torepl.PassMethod.file,
+            delimiter = ";;",
+          },
         },
       })
       vim.keymap.set("n", "<leader><CR>", "<Cmd>ToReplBuffer<CR>")
@@ -90,17 +95,6 @@ return {
     version = false,
     config = function() require("mini.move").setup({}) end
   },
-  -- {
-  --   "echasnovski/mini.files",
-  --   version = false,
-  --   config = function()
-  --     local files = require("mini.files")
-  --     files.setup({
-  --       options = {use_as_default_explorer = false}
-  --     })
-  --     vim.keymap.set("n", "<leader>-", files.open)
-  --   end
-  -- },
   {
     "stevearc/oil.nvim",
     dependencies = { { "nvim-mini/mini.icons", opts = {} } },
