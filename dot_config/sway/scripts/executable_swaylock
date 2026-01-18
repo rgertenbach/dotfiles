@@ -7,7 +7,7 @@ case "$(uname -n)" in
     'rgertenbach.mtv.corp.google.com')
         swaylock -i DP-2:~/Pictures/DP-2.png -i DP-4:~/Pictures/DP-4.png
         ;;
-    'nibor')
+    'husky')
         swaylock -i DP-2:~/Pictures/wallpapers/lockscreen/DP-2.png -i DP-1:~/Pictures/wallpapers/lockscreen/DP-1.png
         ;;
     'corgi')

@@ -66,7 +66,7 @@ __prompt_command() {
   local -A icons
   local icons['rgertenbach.mtv.corp.google.com']='δ'
   local icons['rgertenbach3']='λ'
-  local icons['nibor']='α'
+  local icons['husky']='α'
   local icons['corgi']='ξ'
   local icon="${icons["$(uname -n)"]}"
 

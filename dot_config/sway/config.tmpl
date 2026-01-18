@@ -37,7 +37,7 @@ include /etc/sway/config.d/50-systemd-user.conf
 exec_always {{ .chezmoi.homeDir }}/bin/autoscreen
 output DP-2 bg {{ .chezmoi.homeDir }}/Pictures/DP-2.png tile '#000000'
 output DP-4 bg {{ .chezmoi.homeDir }}/Pictures/DP-4.png tile '#000000'
-{{ else if eq .chezmoi.hostname "nibor" }}
+{{ else if eq .chezmoi.hostname "husky" }}
 output DP-1 bg /home/robin/Pictures/wallpapers/DP-1.png tile '#000000'
 output DP-2 bg /home/robin/Pictures/wallpapers/DP-2.png tile '#000000'
 {{ else if eq .chezmoi.hostname "rgertenbach3" }}
