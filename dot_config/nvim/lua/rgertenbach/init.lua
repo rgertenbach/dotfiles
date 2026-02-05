@@ -151,3 +151,5 @@ vim.lsp.config("hls", {
   end
 })
 vim.lsp.enable({ "lua_ls", "bashls", "clangd", "basedpyright", "hls", "ts_ls" })
+
+vim.g.markdown_fenced_languages = {"bash", "python", "c"}
