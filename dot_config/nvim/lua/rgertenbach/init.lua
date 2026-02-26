@@ -68,13 +68,6 @@ vim.keymap.set("n", "<Esc>", "<cmd>nohl<CR>")     -- Remove search highlights
 -- Replace text under visual selection in buffer.
 vim.keymap.set("v", "<C-s>", "\"zy:%s/z//g<left><left>")
 
-vim.cmd.highlight("DevKeywordsInfo", "ctermbg=DarkBlue guibg=DarkBlue")
-vim.cmd.highlight("DevKeywordsWarn", "ctermbg=DarkMagenta guibg=DarkMagenta")
-_DevKeywordMatchers = {
-  todo = vim.fn.matchadd("DevKeywordsInfo", ".*TODO:.*"),
-  dns = vim.fn.matchadd("DevKeywordsWarn", ".*DO NOT SUBMIT.*\\c")
-}
-
 --- Aligns lines by the first occurrence of the regex.
 ---@param command vim.api.keyset.create_user_command.command_args
 ---@param out_buf integer
@@ -150,6 +143,11 @@ vim.lsp.config("hls", {
     end
   end
 })
+
+vim.lsp.config("ts_ls", {
+  settings = {implicitProjectConfiguration = { checkJs = true } }
+})
+
 vim.lsp.enable({ "lua_ls", "bashls", "clangd", "basedpyright", "hls", "ts_ls", "html" })
 
 vim.g.markdown_fenced_languages = {"bash", "python", "c"}
