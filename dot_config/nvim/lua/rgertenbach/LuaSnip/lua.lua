@@ -8,7 +8,7 @@ return {
   s(
   {
     trig = "snip",
-    name = "Snippeo Boilerplate",
+    name = "Snippet Boilerplate",
     dscr = "Boilerplate to add a new LuaSnip snippets file"
   },
   {

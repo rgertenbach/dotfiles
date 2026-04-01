@@ -1,4 +1,3 @@
-require("rgertenbach.autocomplete")
 local rg_lsp = require("rgertenbach.lsp")
 vim.opt.timeout = false       -- Key combos don't expire, y <1 min> y yanks a line.
 vim.opt.number = true         -- Show line numbers.
@@ -18,6 +17,8 @@ vim.opt.smartindent = true -- Enable smart auto-indent.
 vim.opt.shiftwidth = 4     -- # of auto indent spaces for autoindent (>> etc.)
 vim.opt.softtabstop = 4    -- Tab inserts spaces to align to a multiple of 4.
 
+vim.g.mapleader = ' '  -- <Leader>
+vim.g.maplocalleader = ' '  -- <LocalLeader>
 
 -- Python
 vim.g.python3_host_prog = '~/py/venv/bin/python3'
@@ -100,7 +101,6 @@ local function align_buffer(command, ns, out_buf)
       end
     end
   end
-  return 2
 end
 
 vim.api.nvim_create_user_command(

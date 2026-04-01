@@ -1,6 +1,5 @@
 -- Mini plugin to highlight lines where a character limit is exceeded.
 
-
 local m = {}
 
 ---@class Config A configuration of line limits.

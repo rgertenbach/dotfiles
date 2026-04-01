@@ -1,14 +1,11 @@
 -- Set up of LSP.
 
 -- This doesn't include all servers, only overrides lspconig defaults.
-local cmp_nvim_lsp = require('cmp_nvim_lsp')
 
 local M = {}
 
-
 function M.make_capabilities()
   local client_capabilities = vim.lsp.protocol.make_client_capabilities()
-  local cmp_capabilities = cmp_nvim_lsp.default_capabilities(client_capabilities)
   return vim.tbl_deep_extend('force', client_capabilities, cmp_capabilities)
 end
 
