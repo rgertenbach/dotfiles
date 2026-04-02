@@ -1,4 +1,6 @@
-local rg_lsp = require("rgertenbach.lsp")
+---- Default Behavior ----
+
+-- Visual Settings.
 vim.opt.timeout = false       -- Key combos don't expire, y <1 min> y yanks a line.
 vim.opt.number = true         -- Show line numbers.
 vim.opt.relativenumber = true -- Show relative line numbers.
@@ -17,13 +19,12 @@ vim.opt.smartindent = true -- Enable smart auto-indent.
 vim.opt.shiftwidth = 4     -- # of auto indent spaces for autoindent (>> etc.)
 vim.opt.softtabstop = 4    -- Tab inserts spaces to align to a multiple of 4.
 
-vim.g.mapleader = ' '  -- <Leader>
-vim.g.maplocalleader = ' '  -- <LocalLeader>
+vim.g.mapleader = ' '      -- <Leader>
+vim.g.maplocalleader = ' ' -- <LocalLeader>
 
--- Python
+-- Language specific.
 vim.g.python3_host_prog = '~/py/venv/bin/python3'
-
--- C
+vim.g.markdown_fenced_languages = { "bash", "python", "c" }
 vim.g.c_syntax_for_h = 1
 
 -- Persistent undo history but in /tmp/. This keeps data beteen relaunches.
@@ -32,81 +33,34 @@ vim.fn.mkdir(undodir, "-p")
 vim.opt.undodir = undodir
 vim.opt.undofile = true
 
-local colorbar = require('rgertenbach.colorbar')
-colorbar.setup({ default = 80 })
-table.insert(colorbar.config.exclude_ft, "trouble")
+require('rgertenbach.colorbar').setup({
+  default = 80,
+  exclude_ft = {
+    "", "help", "trouble",
+    "TelescopePrompt", "TelescopeResults", "TelescopePreview"
+  },
+  exclude_bt = { "terminal", "prompt" },
+})
 
-local function camel_to_snake()
-  local word = vim.call('expand', '<cword>')
-  local out = word:gsub("(%u)", "_%1"):gsub("(%u)", string.lower):gsub("^_", "")
-  vim.cmd("normal! ciw" .. out)
-end
 
-local function snake_to_camel()
-  local word = vim.call('expand', '<cword>')
-  local out = word:gsub("_(.)", string.upper):gsub("^(.)", string.upper)
-  vim.cmd("normal! ciw" .. out)
-end
+---- Keymaps and commands ----
 
-local function toggle_snake_camel()
-  local word = vim.call('expand', '<cword>')
-  if word:match("_") then
-    snake_to_camel()
-  else
-    camel_to_snake()
-  end
-end
-
-vim.api.nvim_create_user_command("CamelToSnake", camel_to_snake, {})
-vim.api.nvim_create_user_command("SnakeToCamel", snake_to_camel, {})
-vim.api.nvim_create_user_command("ToggleSnakeCamel", toggle_snake_camel, {})
-vim.keymap.set("n", "<C-j>", toggle_snake_camel)
+-- Replace text under visual selection in buffer.
+vim.keymap.set("v", "<C-s>", "\"zy:%s/z//g<left><left>")
 vim.keymap.set("i", "<C-@>", "<C-Space>")         -- Prevent <C-Space> being <C-@>.
-
 vim.keymap.set("x", "<leader>p", "\"_dp")         -- Paste keeping register intact.
 vim.keymap.set({ "n", "v" }, "<leader>y", "\"+y") -- Yank to system clipboard.
 vim.keymap.set("n", "<Esc>", "<cmd>nohl<CR>")     -- Remove search highlights
--- Replace text under visual selection in buffer.
-vim.keymap.set("v", "<C-s>", "\"zy:%s/z//g<left><left>")
 
---- Aligns lines by the first occurrence of the regex.
----@param command vim.api.keyset.create_user_command.command_args
----@param out_buf integer
-local function align_buffer(command, ns, out_buf)
-  local in_buf = vim.api.nvim_get_current_buf()
-  if out_buf == nil then out_buf = in_buf end
-  local first = command.line1
-  local last = command.line2
-  if first == last then
-    first = 1
-    vim.fn.line("$")
-  end
-  local regex = vim.regex(command.args)
-  local rightmost = 0
-  local position = {}
-  for ln = first, last do
-    local col = regex:match_line(in_buf, ln - 1)
-    if col ~= nil then
-      position[ln - 1] = col
-      rightmost = math.max(rightmost, col)
-    end
-  end
-  for ln, col in pairs(position) do
-    local len = rightmost - col
-    if len > 0 then
-      local spaces = { string.rep(" ", len) }
-      vim.api.nvim_buf_set_text(out_buf, ln, col, ln, col, spaces)
-      if ns then
-        vim.hl.range(out_buf, ns, "Substitute", { ln, col }, { ln, col + len })
-      end
-    end
-  end
-end
-
+local buf = require("rgertenbach.buf")
+vim.api.nvim_create_user_command("CamelToSnake", buf.camel_to_snake, {})
+vim.api.nvim_create_user_command("SnakeToCamel", buf.snake_to_camel, {})
+vim.api.nvim_create_user_command("ToggleSnakeCamel", buf.toggle_snake_camel, {})
+vim.keymap.set("n", "<C-j>", buf.toggle_snake_camel)
 vim.api.nvim_create_user_command(
   "Align",
-  align_buffer,
-  { nargs = 1, range = "%", preview = align_buffer })
+  buf.align_buffer,
+  { nargs = 1, range = "%", preview = buf.align_buffer })
 
 -- Make buffer's directory pwd.
 vim.keymap.set("n", "<leader>pfd", ":cd %:h<CR>:pwd<CR>")
@@ -115,24 +69,12 @@ vim.keymap.set("n", "<leader>pfd", ":cd %:h<CR>:pwd<CR>")
 vim.keymap.set('n', '<C-u>', '<C-u>zz')
 vim.keymap.set('n', '<C-d>', '<C-d>zz')
 
--- Autoformat with LSP where available, otherwise use formatter.nvim
-vim.api.nvim_create_augroup("Formatter", {})
-vim.api.nvim_create_autocmd(
-  { "BufEnter", "BufNew" },
-  {
-    group = "Formatter",
-    callback = function()
-      local cmd = "<cmd>Format<CR>" ---@type function|string
-      if #vim.lsp.get_clients({ bufnr = 0, method = "textDocument/formatting" }) > 0 then
-        cmd = vim.lsp.buf.format
-      end
+---- LSP Setup ----
 
-      vim.keymap.set("n", "<leader>==", cmd, { buffer = 0 })
-    end
-  }
-)
+local rg_lsp = require("rgertenbach.lsp")
 
 vim.lsp.config("*", { on_attach = rg_lsp.on_attach })
+
 vim.lsp.config("hls", {
   filetypes = { "haskell", "lhaskell", "cabal" },
   on_attach = function(client, bufnr)
@@ -145,9 +87,24 @@ vim.lsp.config("hls", {
 })
 
 vim.lsp.config("ts_ls", {
-  settings = {implicitProjectConfiguration = { checkJs = true } }
+  settings = { implicitProjectConfiguration = { checkJs = true } }
 })
 
-vim.lsp.enable({ "lua_ls", "bashls", "clangd", "basedpyright", "hls", "ts_ls", "html" })
+vim.lsp.enable({ "lua_ls", "bashls", "clangd", "basedpyright", "ts_ls", "html" })
 
-vim.g.markdown_fenced_languages = {"bash", "python", "c"}
+-- Autoformat with LSP where available, otherwise use formatter.nvim
+vim.api.nvim_create_augroup("Formatter", {})
+vim.api.nvim_create_autocmd(
+  { "BufEnter", "BufNew" },
+  {
+    group = "Formatter",
+    callback = function()
+      local cmd = "<Cmd>Format<CR>" ---@type function|string
+      if #vim.lsp.get_clients({ bufnr = 0, method = "textDocument/formatting" }) > 0 then
+        cmd = vim.lsp.buf.format
+      end
+
+      vim.keymap.set("n", "<leader>==", cmd, { buffer = 0 })
+    end
+  }
+)

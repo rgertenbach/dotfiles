@@ -4,12 +4,7 @@
 
 local M = {}
 
-function M.make_capabilities()
-  local client_capabilities = vim.lsp.protocol.make_client_capabilities()
-  return vim.tbl_deep_extend('force', client_capabilities, cmp_capabilities)
-end
-
-vim.api.nvim_create_augroup("LspDocumentHighlight", { clear = true })
+vim.api.nvim_create_augroup("LspDocumentHighlight", { clear = false })
 
 ---Generic on_attach all buffers should run.
 ---
