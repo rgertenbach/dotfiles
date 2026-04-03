@@ -23,14 +23,14 @@ function M.on_attach(client, bufnr)
   nmap('grt', vim.lsp.buf.type_definition, '[G]oto [T]ype Definition')
 
   -- Add `:LspFormat` local to the LSP buffer
-  if client.server_capabilities.documentFormattingProvider then
+  if client:supports_method("textDocument/formatting") then
     vim.api.nvim_buf_create_user_command(bufnr, 'LspFormat', function(_)
       vim.lsp.buf.format()
     end, { desc = 'Format current buffer with LSP' })
     nmap('<leader>==', vim.lsp.buf.format)
   end
 
-  if client.server_capabilities.documentHighlightProvider then
+  if client:supports_method("textDocument/documentHighlight") then
     vim.api.nvim_create_autocmd(
       { "CursorHold", "CursorHoldI" },
       {
