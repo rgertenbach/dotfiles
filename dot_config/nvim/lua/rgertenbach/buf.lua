@@ -27,6 +27,7 @@ end
 --- Aligns lines by the first occurrence of the regex.
 ---@param command vim.api.keyset.create_user_command.command_args
 ---@param out_buf integer
+---@return integer 1 Return code for preview handling.
 function m.align_buffer(command, ns, out_buf)
   local in_buf = vim.api.nvim_get_current_buf()
   if out_buf == nil then out_buf = in_buf end
@@ -34,7 +35,7 @@ function m.align_buffer(command, ns, out_buf)
   local last = command.line2
   if first == last then
     first = 1
-    vim.fn.line("$")
+    last = vim.fn.line("$")
   end
   local regex = vim.regex(command.args)
   local rightmost = 0
@@ -56,6 +57,7 @@ function m.align_buffer(command, ns, out_buf)
       end
     end
   end
+  return 1
 end
 
 
