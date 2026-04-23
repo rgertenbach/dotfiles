@@ -21,7 +21,6 @@ vim.pack.add({
 vim.cmd.colorscheme("nightfox")
 vim.keymap.set("n", "<leader>u", vim.cmd.UndotreeToggle)
 require("mini.statusline").setup()
-require("mini.move").setup()
 require("mini.icons").setup()
 
 require("oil").setup({

@@ -2,8 +2,8 @@
 
 -- Visual Settings.
 vim.opt.timeout = false       -- Key combos don't expire, y <1 min> y yanks a line.
-vim.opt.number = true         -- Show line numbers.
 vim.opt.relativenumber = true -- Show relative line numbers.
+vim.opt.number = true         -- Show line numbers.
 vim.opt.termguicolors = true  -- 24-bit colors.
 vim.opt.signcolumn = "yes"    -- Reserve space for diagnostic icons.
 vim.opt.showmatch = true      -- Highlight matching brace.
@@ -57,6 +57,14 @@ vim.api.nvim_create_user_command("CamelToSnake", buf.camel_to_snake, {})
 vim.api.nvim_create_user_command("SnakeToCamel", buf.snake_to_camel, {})
 vim.api.nvim_create_user_command("ToggleSnakeCamel", buf.toggle_snake_camel, {})
 vim.keymap.set("n", "<C-j>", buf.toggle_snake_camel)
+vim.keymap.set("n", "<A-j>", function()
+  vim.cmd.move("+" .. vim.v.count1)
+  vim.cmd("normal! V=")
+end)
+vim.keymap.set("n", "<A-k>", function()
+  vim.cmd.move("-" .. vim.v.count1 + 1)
+  vim.cmd("normal! V=")
+end)
 vim.api.nvim_create_user_command(
   "Align",
   buf.align_buffer,
@@ -108,3 +116,4 @@ vim.api.nvim_create_autocmd(
     end
   }
 )
+
