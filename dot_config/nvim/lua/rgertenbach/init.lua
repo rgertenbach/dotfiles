@@ -57,14 +57,6 @@ vim.api.nvim_create_user_command("CamelToSnake", buf.camel_to_snake, {})
 vim.api.nvim_create_user_command("SnakeToCamel", buf.snake_to_camel, {})
 vim.api.nvim_create_user_command("ToggleSnakeCamel", buf.toggle_snake_camel, {})
 vim.keymap.set("n", "<C-j>", buf.toggle_snake_camel)
-vim.keymap.set("n", "<A-j>", function()
-  vim.cmd.move("+" .. vim.v.count1)
-  vim.cmd("normal! V=")
-end)
-vim.keymap.set("n", "<A-k>", function()
-  vim.cmd.move("-" .. vim.v.count1 + 1)
-  vim.cmd("normal! V=")
-end)
 vim.api.nvim_create_user_command(
   "Align",
   buf.align_buffer,
