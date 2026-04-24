@@ -80,7 +80,11 @@ launch=xdg-open ${url}
 [touch]
 # long-press-delay=400
 
+{{ if eq .chezmoi.hostname "corgi" }}
+[colors-dark]
+{{ else }}
 [colors]
+{{ end }}
 # alpha=1.0
 background = 192330
 foreground = cdcecf
