@@ -60,5 +60,4 @@ function m.align_buffer(command, ns, out_buf)
   return 1
 end
 
-
 return m

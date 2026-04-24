@@ -23,12 +23,11 @@ vim.keymap.set("n", "<leader>u", vim.cmd.UndotreeToggle)
 require("mini.statusline").setup()
 require("mini.icons").setup()
 require("mini.move").setup({
-  -- No left / right.
   mappings = {
-    down = '<M-j>',
-    up = '<M-k>',
-    line_down = '<M-j>',
-    line_up = '<M-k>',
+    left = "",
+    right = "",
+    line_left = "",
+    line_right = "",
   }
 })
 
