@@ -42,6 +42,9 @@ require('rgertenbach.colorbar').setup({
   exclude_bt = { "terminal", "prompt" },
 })
 
+-- Experimental message / cmdline presentation.
+-- g< enters the message output as a buffer.
+require("vim._core.ui2").enable({})
 
 ---- Keymaps and commands ----
 
