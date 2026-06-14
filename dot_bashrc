@@ -117,3 +117,5 @@ up() {
     return 1
   fi
 }
+
+export PATH="${PATH}:${HOME}/.ghcup/bin"

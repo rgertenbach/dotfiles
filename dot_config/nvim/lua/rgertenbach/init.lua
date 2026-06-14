@@ -36,8 +36,7 @@ vim.opt.undofile = true
 require('rgertenbach.colorbar').setup({
   default = 80,
   exclude_ft = {
-    "", "help", "trouble",
-    "TelescopePrompt", "TelescopeResults", "TelescopePreview"
+    "", "help", "TelescopePrompt", "TelescopeResults", "TelescopePreview"
   },
   exclude_bt = { "terminal", "prompt" },
 })
@@ -74,55 +73,39 @@ vim.keymap.set('n', '<C-d>', '<C-d>zz')
 
 ---- LSP Setup ----
 
-local rg_lsp = require("rgertenbach.lsp")
+local dochl = vim.api.nvim_create_augroup("LspDocHighlight", { clear = false })
 
-vim.lsp.config("*", { on_attach = rg_lsp.on_attach })
-
-vim.lsp.config("hls", {
-  filetypes = { "haskell", "lhaskell", "cabal" },
-  on_attach = function(client, bufnr)
-    rg_lsp.on_attach(client, bufnr)
-    -- Cabal files don't support documentHighlight right now.
-    if vim.bo.filetype == "cabal" then
-      vim.api.nvim_clear_autocmds({ buffer = bufnr, group = "LspDocumentHighlight" })
-    end
-  end
-})
-
-vim.lsp.config("ts_ls", {
-  cmd = function(dispatchers, config)
-    local cmd = 'typescript-language-server'
-    if (config or {}).root_dir then
-      local local_cmd = vim.fs.joinpath(config.root_dir, 'node_modules/.bin', cmd)
-      if vim.fn.executable(local_cmd) == 1 then cmd = local_cmd end
-    end
-    return vim.lsp.rpc.start({ cmd, '--stdio' }, dispatchers)
-  end,
-  root_dir = function(bufnr, on_dir)
-    local root_markers = {
-      { "package-lock.json", "yarn.lock", "pnpm-lock.yaml" }, { ".git" }
-    }
-    on_dir(vim.fs.root(bufnr, root_markers) or vim.fn.getcwd())
-  end,
-  filetypes = { "javascript", "typescript" },
-  settings = { implicitProjectConfiguration = { checkJs = true } }
-})
-
-vim.lsp.enable({ "lua_ls", "bashls", "clangd", "basedpyright", "ts_ls", "html" })
-
--- Autoformat with LSP where available, otherwise use formatter.nvim
-vim.api.nvim_create_augroup("Formatter", {})
 vim.api.nvim_create_autocmd(
-  { "BufEnter", "BufNew" },
+  { "LspAttach" },
   {
-    group = "Formatter",
-    callback = function()
+    callback = function(args)
+      local bufnr = args.buf
+      local client = vim.lsp.get_client_by_id(args.data.client_id)
+
+      vim.keymap.set("n", "gd", vim.lsp.buf.definition, {
+        buf = bufnr,
+        desc = "[G]o to [D]efinition"
+      })
+
+      -- Autoformat with LSP where available, otherwise use formatter.nvim
       local cmd = "<Cmd>Format<CR>" ---@type function|string
-      if #vim.lsp.get_clients({ bufnr = 0, method = "textDocument/formatting" }) > 0 then
+      if client and client:supports_method("textDocument/formatting") then
         cmd = vim.lsp.buf.format
       end
 
-      vim.keymap.set("n", "<leader>==", cmd, { buffer = 0 })
+      vim.keymap.set("n", "<Leader>==", cmd, {
+        buf = bufnr, desc = "Format Buffer with LSP"
+      })
+      if client and client:supports_method("textDocument/documentHighlight") then
+        vim.api.nvim_create_autocmd(
+          { "CursorHold", "CursorHoldI" },
+          { buffer = bufnr, group = dochl, callback = vim.lsp.buf.document_highlight })
+        vim.api.nvim_create_autocmd(
+          { "CursorMoved" },
+          { buffer = bufnr, group = dochl, callback = vim.lsp.buf.clear_references })
+      end
     end
   }
 )
+
+vim.lsp.enable({ "lua_ls", "bashls", "clangd", "basedpyright", "ts_ls", "html", "hls" })
