@@ -13,7 +13,7 @@ vim.pack.add({
 
   -- gh("nvim-telescope/telescope-fzf-native.nvim"),  -- Need cmake update hook
   gh("nvim-telescope/telescope.nvim"),
-  gh("nvim-lua/plenary.nvim"), -- Dep for Treesitter
+  gh("nvim-lua/plenary.nvim"),       -- Dep for Treesitter
   gh("nvim-telescope/telescope-file-browser.nvim"),
   gh("nvim-tree/nvim-web-devicons"), -- File type icons.
 })
@@ -61,6 +61,15 @@ torepl.setup({
       cmd = "lua -i \"%s\"",
       pass_as = torepl.PassMethod.file,
       after = "os.remove(arg[0])",
+      delimiter = "-- PRE",
+    },
+    haskell = {
+      cmd = [[
+        filename="%s"
+        ghci -x hs "${filename}"
+        rm "${filename}"
+      ]],
+      pass_as = torepl.PassMethod.file,
       delimiter = "-- PRE",
     },
   },
