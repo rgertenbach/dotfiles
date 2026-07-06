@@ -15,6 +15,7 @@ vim.pack.add({
   gh("nvim-telescope/telescope.nvim"),
   gh("nvim-lua/plenary.nvim"),       -- Dep for Treesitter
   gh("nvim-telescope/telescope-file-browser.nvim"),
+  gh("luc-tielen/telescope_hoogle"),
   gh("nvim-tree/nvim-web-devicons"), -- File type icons.
 })
 
@@ -66,7 +67,8 @@ torepl.setup({
     haskell = {
       cmd = [[
         filename="%s"
-        ghci -x hs "${filename}"
+        ln -sf "${filename}" "${filename}.hs" \
+          && ghci -v0 -ghci-script <(printf ":load ${filename}\nmain\n")
         rm "${filename}"
       ]],
       pass_as = torepl.PassMethod.file,
@@ -80,12 +82,14 @@ vim.keymap.set("v", "<leader><CR>", "<Cmd>ToReplSelection<CR>")
 local telescope = require("telescope")
 telescope.setup({})
 telescope.load_extension("file_browser")
--- telescope.load_extension("fzf")
-vim.keymap.set("n", "<leader>e", "<Cmd>Telescope file_browser<CR>")
+telescope.load_extension("hoogle")
+
 local builtin = require("telescope.builtin")
+vim.keymap.set("n", "<leader>e", "<Cmd>Telescope file_browser<CR>")
 vim.keymap.set("n", "<leader>ff", builtin.find_files)
 vim.keymap.set("n", "<leader>fb", builtin.buffers)
 vim.keymap.set("n", "<leader>fg", builtin.live_grep)
 vim.keymap.set("n", "<leader>fs", builtin.grep_string)
 vim.keymap.set("n", "<leader>fj", builtin.jumplist)
 vim.keymap.set("n", "<leader>fh", builtin.help_tags)
+vim.keymap.set("n", "<leader>fl", "<Cmd>Telescope hoogle<CR>")
