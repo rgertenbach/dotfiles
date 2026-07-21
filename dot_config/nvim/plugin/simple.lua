@@ -68,7 +68,7 @@ torepl.setup({
       cmd = [[
         filename="%s"
         ln -sf "${filename}" "${filename}.hs" \
-          && ghci -v0 -ghci-script <(printf ":load ${filename}\nmain\n")
+          && ghci -v0 -ghci-script <(printf ":load ${filename}\n")
         rm "${filename}"
       ]],
       pass_as = torepl.PassMethod.file,
