@@ -1,0 +1,9 @@
+#!/bin/sh
+
+active=$(swaymsg -t get_outputs --raw | jq 'map(select(.name == "eDP-1" and .active)) | length')
+
+if [ ${active} -eq 1 ]; then
+    sway output 'eDP-1' disable
+else
+    sway output 'eDP-1' enable
+fi

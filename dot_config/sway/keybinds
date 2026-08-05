@@ -77,6 +77,9 @@ bindsym XF86Bluetooth exec blueman-manager
 # Lock screen and Background
 bindsym $mod+shift+x exec "~/.config/sway/scripts/swaylock"
 
+# Turn Laptop screen on or off
+bindsym $mod+shift+n exec "~/.config/sway/scripts/toggle-edp1"
+
 bindsym $mod+c exec --no-startup-id google-chrome-stable
 
 # F7 / Screen button thingy runs autoscreen
