@@ -1,5 +1,5 @@
 return {
-  cmd = { "haskell-language-server-wrapper", "--lsp" },
+  cmd = { "haskell-language-server-wrapper", "--lsp", "--log-stderr", "False"},
   filetypes = { "haskell", "lhaskell", "cabal" },
   root_dir = function(bufnr, on_dir)
     local fname = vim.api.nvim_buf_get_name(bufnr)
