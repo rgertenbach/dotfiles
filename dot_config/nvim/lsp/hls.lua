@@ -15,7 +15,7 @@ return {
   on_attach = function(_, bufnr)
     -- Cabal files don't support documentHighlight right now.
     if vim.bo.filetype == "cabal" then
-      vim.api.nvim_clear_autocmds({ buffer = bufnr, group = "LsPDocHighlight" })
+      vim.api.nvim_clear_autocmds({ buffer = bufnr, group = "LspDocHighlight" })
     end
   end
 }
