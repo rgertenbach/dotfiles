@@ -80,7 +80,14 @@ vim.keymap.set("n", "<leader><CR>", "<Cmd>ToReplBuffer<CR>")
 vim.keymap.set("v", "<leader><CR>", "<Cmd>ToReplSelection<CR>")
 
 local telescope = require("telescope")
-telescope.setup({})
+telescope.setup({
+  extensions = {
+    hoogle = {
+      render = "treesitter",
+      renders = { treesitter = {remove_wrap = false} },
+    }
+  }
+})
 telescope.load_extension("file_browser")
 telescope.load_extension("hoogle")
 
