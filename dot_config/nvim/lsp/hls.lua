@@ -10,6 +10,11 @@ return {
     haskell = {
       formattingProvider = 'ormolu',
       cabalFormattingProvider = 'cabal-fmt',
+      plugin = {
+        semanticTokens = {
+          globalOn = true
+        }
+      }
     },
   },
 }
