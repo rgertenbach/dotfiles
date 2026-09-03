@@ -13,11 +13,13 @@ vim.pack.add({
 
   -- gh("nvim-telescope/telescope-fzf-native.nvim"),  -- Need cmake update hook
   gh("nvim-telescope/telescope.nvim"),
-  gh("nvim-lua/plenary.nvim"),       -- Dep for Treesitter
+  gh("nvim-lua/plenary.nvim"), -- Dep for Treesitter
   gh("nvim-telescope/telescope-file-browser.nvim"),
   gh("luc-tielen/telescope_hoogle"),
   gh("nvim-tree/nvim-web-devicons"), -- File type icons.
 })
+
+vim.cmd.packadd("nvim.difftool")
 
 vim.cmd.colorscheme("nightfox")
 vim.keymap.set("n", "<leader>u", vim.cmd.UndotreeToggle)
@@ -84,7 +86,7 @@ telescope.setup({
   extensions = {
     hoogle = {
       render = "treesitter",
-      renders = { treesitter = {remove_wrap = false} },
+      renders = { treesitter = { remove_wrap = false } },
     }
   }
 })
