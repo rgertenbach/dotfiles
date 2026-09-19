@@ -9,11 +9,16 @@ vim.pack.add({
   gh("folke/trouble.nvim"),    -- Diagnostics cmd = "Trouble",
   gh("folke/lazydev.nvim"),    -- Better lua_ls.
   gh("neovim/nvim-lspconfig"), -- Prebuilt LSP Configs
+  gh("DrKJeff16/wezterm-types"),
 })
 
 require("mason").setup()
 require("mason-lspconfig").setup()
-require("lazydev").setup()
+require("lazydev").setup({
+  library = {
+    { path = 'wezterm-types', mods = { 'wezterm' } },
+  }
+})
 
 require("formatter").setup({
   filetype = {
