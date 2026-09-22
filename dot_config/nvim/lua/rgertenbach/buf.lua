@@ -60,4 +60,78 @@ function m.align_buffer(command, ns, out_buf)
   return 1
 end
 
+---@param x integer The number to round
+---@param digits integer The number of decimal digits to round to.
+function m.round(x, digits)
+	local pow = 10 ^ (digits or 0)
+	return math.floor(x * pow + 0.5) / pow
+end
+
+---@param line string The string to search.
+---@param pattern string The pattern to match.
+---@param col integer 1-based column that needs to be included in the match.
+---@return string | nil, integer | nil, integer | nil
+function m.match_left(line, pattern, col)
+	local pat = "(" .. pattern .. ")"
+	local start, end_, captured
+	for init = 0, math.min(#line - 1, col) do
+		start, end_, captured = line:find(pat, init)
+		if start and start <= col and col <= end_ then
+			return captured, start, end_
+		end
+	end
+	return nil, nil, nil
+end
+
+---@param line string The string to search.
+---@param pattern string The pattern to match.
+---@param col integer 1-based column that needs to be included in the match.
+---@return string | nil, integer | nil, integer | nil
+function m.match_right(line, pattern, col)
+	local pat = "(" .. pattern .. ")"
+	local start, end_, captured
+	for init = math.min(#line - 1, col), 1, -1 do
+		start, end_, captured = line:find(pat, init)
+		if start and start <= col and col <= end_ then
+			return captured, start, end_
+		end
+	end
+	return nil, nil, nil
+end
+
+---@param pattern string
+---@param bias "left" | "right"
+---@return string | nil, integer | nil, integer | nil, integer | nil
+function m.cpattern(pattern, bias)
+	local pos = vim.api.nvim_win_get_cursor(0)
+	local row, col = pos[1] - 1, pos[2]
+	local line = vim.api.nvim_buf_get_lines(0, row, row + 1, true)[1]
+	local match, start, end_
+	if bias == "left" then
+		match, start, end_ = m.match_left(line, pattern, col + 1)
+		return match, match and row, start, end_
+	else
+		match, start, end_ = m.match_right(line, pattern, col + 1)
+		return match, match and row, start, end_
+	end
+end
+
+vim.api.nvim_create_user_command("Round", function(opts)
+	local match, row, col, end_ = m.cpattern("%d*%.%d*", "left")
+	if match == nil or row == nil or end_ == nil then
+		vim.print("couldn't find number")
+		return
+	end
+	local number = tonumber(match)
+	if number == nil then
+		vim.print("couldn't parse number")
+		return
+	end
+	local digits = tonumber(opts.args) or 0
+	local rounded = m.round(number, digits)
+	local formatted = ("%%.%df"):format(math.max(digits, 0)):format(rounded)
+	vim.api.nvim_buf_set_text(0, row, col - 1, row, end_, { formatted })
+end, { nargs = "?" })
+
+
 return m
