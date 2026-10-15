@@ -110,3 +110,4 @@ vim.keymap.set("n", "<Leader>==", function()
 		vim.cmd("Format")
 	end
 end, { desc = "Format Buffer with LSP if possible, otherwise try :Format" })
+
